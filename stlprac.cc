@@ -2,6 +2,7 @@
 #include <vector>
 
 //--- use std::vector as a member variable of a class ---
+// http://stackoverflow.com/questions/8553464/vector-as-a-class-member
 class SampleClass
 {
 public:
