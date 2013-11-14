@@ -1,5 +1,12 @@
 #include <iostream>
 #include <boost/format.hpp>
+//-- boost/format is a library for formatting of outputs -- 
+
+//-- A tutorial for matrix handling by boost is:
+// http://www.page.sannet.ne.jp/d_takahashi/boost/ublas/
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/io.hpp>
+#include <complex>
 
 template <int N>
 struct Factorial
@@ -44,5 +51,37 @@ int main(int argc, char *argv[])
   std::cout << "N1 = "  << N1  << std::endl;
   std::cout << "&Ptr = " << &Ptr << std::endl;
 
+  //--- handling complex number --
+  std::complex<double> c1(0.0, 1.0);
+  std::cout << "c1 = " << c1 << std::endl;
+
+  //-------------------
+  //  boost matrix
+  //-------------------
+  boost::numeric::ublas::matrix<double> matd(3,4), mat2(3,4); //lines, rows
+  boost::numeric::ublas::matrix<std::complex<double> > matc(2,2);
+  
+  for(int i=0; i<3; i++)
+    {
+      for(int j=0; j<4; j++)
+	{
+	  matd(i,j) = 1.0;
+	  mat2(i,j) = double(i) + 2.0*double(j);
+	}
+    }
+  for(int i=0; i<2; i++)
+    {
+      for(int j=0; j<2; j++)
+	{
+	  //-- A complex element can't be directly substituted like this:
+	  //   matc(i,j) = (1.0, -1.0);
+	  matc(i,j) = c1;
+	}
+    }
+
+  std::cout << "matd = " << matd << std::endl;
+  std::cout << "matd + mat2 = " << matd + mat2 << std::endl;
+
+  std::cout << "matc = " << matc << std::endl;
   return 0;
 }
