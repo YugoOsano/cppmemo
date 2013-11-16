@@ -7,8 +7,10 @@
 // http://d.hatena.ne.jp/satosystems/20110506/1304688718
 class SubClass
 {
-public:
+private:
   int member;
+
+public:
   // initialize the member by colon(:)
   //http://d.hatena.ne.jp/higepon/20051107/1131335521
   SubClass() : member(0)
@@ -23,6 +25,10 @@ public:
   ~SubClass()
   {
     std::cout << "destructor" << std::endl;
+  }
+  int outmember()
+  {
+    return member;
   }
 };
 
@@ -100,15 +106,25 @@ int main(int argc, char *argv[])
   class SampleClass Instance1(NDIM);
 
   std::cout << "Pointer of the instance: " << &Instance1 << std::endl;
+  
   for(int i=0; i<NDIM; i++)
     {
+      int tmp = Instance1.classvec[i].outmember();
       std::cout << "Instance1.samplevec[" << i << "]: " 
 		<< Instance1.samplevec[i] 
 		<< "\t" << &Instance1.samplevec[i] << std::endl;
       std::cout << "Instance1.classvec[" << i << "].member: "
-		<< Instance1.classvec[i].member
-		<< "\t" << &Instance1.classvec[i] << std::endl;
+		<< tmp << "\t" << &Instance1.classvec[i] << std::endl;
     }
+
+  //--- member function pointer --
+  // http://www.geocities.jp/ky_webid/cpp/language/034.html
+  //--- conditional branching with function pointer
+  // http://www.c-lang.org/pointer_function.html
+
+  int (SubClass::*pfunc)() = &SubClass::outmember;
+  class SubClass Instance2;
+  std::cout << (Instance2.*pfunc)() << std::endl;
 
   return 0;
 }
