@@ -19,4 +19,5 @@ do
     echo "file created or modified: $newfile"
 done
 
-
+# basics for handling an array in bash:
+# http://d.hatena.ne.jp/nattou_curry_2/20091104/1257346587
