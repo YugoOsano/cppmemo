@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <set>
 
 //-- prepare a class to use as a member of SampleClass --
 // default constructor and copy constructor are needed to
@@ -55,6 +56,19 @@ SampleClass::SampleClass(int n_vecdim)
   classvec.assign(n_vecdim, SubClass());
 }
 
+//--- print every element of set --
+// http://d.hatena.ne.jp/minus9d/20120611/1339422594
+void printSet(std::set<double> &s)
+{
+  std::cout << "set: " ;
+  for(std::set<double>::iterator it = s.begin();
+      it != s.end(); ++it)
+    {
+      std::cout << *it << ",";
+    }
+  std::cout << std::endl;
+}
+
 //--- number of dimension --
 const int NDIM  = 3;
 const int NDIMX = 2;
@@ -70,11 +84,11 @@ int main(int argc, char *argv[])
   std::vector<double> x;
   x.assign(NDIM, 0.0);
   // above 2 lines are equivalent to 
-  // std::vector<double> x(10, 0.0);
+  // std::vector<double> x(NDIM, 0.0);
 
   double y[NDIM];
 
-  x[0] = 1.5;
+  x[0] = 1.5; x[1] = 1.1;
   y[0] = 2.5;
 
   for(int i=0; i<NDIM; i++)
@@ -84,6 +98,19 @@ int main(int argc, char *argv[])
 		<< "y[" << i << "]: " << y[i] 
 		<< "\t" << &y[i] << std::endl;
     }
+  std::cout << "x.size: " << x.size() << std::endl;
+
+  //--- iterator --
+  std::vector<double>::iterator it;
+  it = x.begin();
+  while(it != x.end())
+    {
+      std::cout << "reference of iterator it: " << *it << std::endl;
+      ++it;
+    }
+  //-- vector -> set --
+  std::set<double> s(x.begin(), x.end());
+  printSet(s);
 
   //-- 2d vector --
   // http://stackoverflow.com/questions/2665936/is-there-a-way-to-specify-the-dimensions-of-a-nested-stl-vector-c
