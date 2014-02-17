@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <set>
+#include <map>
 
 //-- prepare a class to use as a member of SampleClass --
 // default constructor and copy constructor are needed to
@@ -58,7 +59,8 @@ SampleClass::SampleClass(int n_vecdim)
 
 //--- print every element of set --
 // http://d.hatena.ne.jp/minus9d/20120611/1339422594
-void printSet(std::set<double> &s)
+template <typename Tset>
+void printSet(Tset &s)
 {
   std::cout << "set: " ;
   for(std::set<double>::iterator it = s.begin();
@@ -88,7 +90,7 @@ int main(int argc, char *argv[])
 
   double y[NDIM];
 
-  x[0] = 1.5; x[1] = 1.1;
+  x[0] = 1.5; x[1] = 1.5;
   y[0] = 2.5;
 
   for(int i=0; i<NDIM; i++)
@@ -110,7 +112,9 @@ int main(int argc, char *argv[])
     }
   //-- vector -> set --
   std::set<double> s(x.begin(), x.end());
+  std::multiset<double> smulti(x.begin(), x.end());
   printSet(s);
+  printSet(smulti);
 
   //-- 2d vector --
   // http://stackoverflow.com/questions/2665936/is-there-a-way-to-specify-the-dimensions-of-a-nested-stl-vector-c
@@ -152,6 +156,13 @@ int main(int argc, char *argv[])
   int (SubClass::*pfunc)() = &SubClass::outmember;
   class SubClass Instance2;
   std::cout << (Instance2.*pfunc)() << std::endl;
+
+  //--- map ---
+  std::map<std::string, int> mapstringHeight;
+  mapstringHeight["Fuji"] = 3776;
+
+  std::cout << "The height of Fuji is: " 
+	    << mapstringHeight["Fuji"] << std::endl;
 
   return 0;
 }
