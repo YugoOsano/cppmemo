@@ -42,6 +42,7 @@ struct X
 // int a[xmember.n] = {1};
 
 //-- example for variadic template (C++11) --
+// http://cpplover.blogspot.jp/2010/03/variadic-templates.html
 template <typename T>
 T min( T const & a, T const & b )
 {
