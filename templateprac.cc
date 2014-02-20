@@ -1,9 +1,13 @@
 #include <iostream>
+#include <stdlib.h>
 #include <boost/format.hpp>
 //-- boost/format is a library for formatting of outputs -- 
 
 //-- A tutorial for matrix handling by boost is:
 // http://www.page.sannet.ne.jp/d_takahashi/boost/ublas/
+
+// For Ubuntu, boost library will be installed with:
+// sudo apt-get install 'libboost*-dev'
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/io.hpp>
 #include <complex>
@@ -37,6 +41,18 @@ struct X
 // constexpr X xmember = {10};
 // int a[xmember.n] = {1};
 
+//-- example for variadic template (C++11) --
+template <typename T>
+T min( T const & a, T const & b )
+{
+  return a < b ? a : b ;
+}
+template <typename T, typename ... Types >
+T min( T const & head, Types ... tail)
+{
+  return min(head, min( tail ...) );
+}
+
 int main(int argc, char *argv[])
 {
   std::cout << "Hello, World!" << std::endl;
@@ -55,6 +71,13 @@ int main(int argc, char *argv[])
   std::complex<double> c1(0.0, 1.0);
   std::cout << "c1 = " << c1 << std::endl;
 
+  //-- variadic template --
+  if(argc >= 2)
+    {
+      double v1 = 3131.5;
+      double v2 = atof(argv[1]); //-- stdlib.h is for this --
+      std::cout << min(v1, v2, 3135.0) << std::endl;
+    }
   //-------------------
   //  boost matrix
   //-------------------
