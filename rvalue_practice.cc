@@ -66,7 +66,7 @@ int main ()
   X && rr1 = X();
   
   int azero = 0;
-  auto&& y = azero;
+  auto&& y = azero; // no error
 
   template_f(x);
   template_f(X()); //no error
