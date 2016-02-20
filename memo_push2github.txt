@@ -1,0 +1,19 @@
+git init
+git add stlprac.cc
+git commit -m "first commit"
+
+git remote add origin git@github.com:YugoOsano/cppmemo.git
+git push -u origin master
+
+
+
+#  http://blog.glasses-factory.net/2011/08/16/github
+
+
+#-----
+#To fetch and merge from the remote project:
+
+git fetch
+git diff FETCH_HEAD
+git merge FETCH_HEAD
+http://www.atmarkit.co.jp/ait/articles/1207/11/news131_3.html
