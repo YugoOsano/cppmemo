@@ -1,0 +1,24 @@
+take memo whenever operation is stacked.
+
+The memo is taken in Github's issue.
+
+Starting from installing and find what to be improved.
+
+VTK's webpage lacks documents for starting of use. (installing)
+ 
+summarize my own understanding and compose sentences
+
+don't skip explaining what I've done. 
+
+Explain also what I haven't done. 
+
+Don't complain issues; fix them!
+
+As feedbacks are done through the Internet, please explain details.
+
+Document is easier, and welcome. Some programmers are not good at documentation.
+
+Build up mutual trust. 
+
+Start OSS which we are using everyday. Give feedbacks.
+
