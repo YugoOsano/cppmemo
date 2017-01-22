@@ -6,6 +6,9 @@
 #include <bitset>
 #include <limits>
 
+//#include <boost/multiprecision/cpp_int.hpp>
+#include <chrono>
+
 #include "double_long_long.hpp"
 
 int main()
@@ -79,4 +82,42 @@ int main()
   long long result = bit_operation >> 2;
   std::cout << "bit operation's result: " << result 
 	    << std::endl;
+
+  //-- time ---
+  const long long Nrepeat = 1000000000;
+  DoubleLongLong result_instance;
+
+  auto start = std::chrono::system_clock::now();
+
+  for (long i = 0; i < Nrepeat; i++) {
+    result_instance = instance.Multiply(instance);
+  }
+
+  auto end   = std::chrono::system_clock::now();
+  auto diff = end - start;
+  std::cout << "elapsed time = "
+	    << std::chrono::duration_cast<std::chrono::milliseconds>(diff).count()
+	    << " msec."
+	    << std::endl;
+
+  //-- time ---
+  long long input = (maxoflonglong - 1) / 2;
+  long long resultlong = 0;
+  auto start1 = std::chrono::system_clock::now();
+
+  for (long long i = 0; i < Nrepeat; i++) {
+    resultlong += input * i ;   
+    // for (long long j = 0; j < Nrepeat * 100000; j++) {
+    //   resultlong += input * j ;
+      //resultlong = input * input;
+    //    }
+  }
+
+  auto end1   = std::chrono::system_clock::now();
+  auto diff1 = end1 - start1;
+  std::cout << "elapsed time = "
+	    << std::chrono::duration_cast<std::chrono::milliseconds>(diff1).count()
+	    << " msec."
+	    << std::endl;
+  std::cout << "resultlong: " << resultlong << std::endl;
 }
