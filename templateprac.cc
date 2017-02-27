@@ -72,6 +72,27 @@ int VariadicArgFunc(Type1 arg1, TypeSet... argset) {
   return arg1 * InnerFunc(argset...);
 }
 
+// variadic template in a class 
+class OuterClass {
+protected:
+  int InnerFunc(int a) {
+    return a;
+  }
+  int InnerFunc(int a, StructA struct_a) {
+    std::cout << "member value: " << member_ << std::endl;
+    return a * struct_a.ReturnHundred();
+  }
+  double member_;
+public:
+  OuterClass() : member_(2.345){}
+
+  template <class Type1, class... TypeSet>
+  int VariadicArgFunc(Type1 arg1, TypeSet... argset) {
+    
+    return arg1 * InnerFunc(argset...);
+  }
+};
+
 int main(int argc, char *argv[])
 {
   std::cout << "Hello, World!" << std::endl;
@@ -132,6 +153,10 @@ int main(int argc, char *argv[])
   std::cout << "Variadic: " << VariadicArgFunc(3, 5, instanceA)
 	    << std::endl;
 
+  OuterClass instance_outer;
+  std::cout << "Variadic func in class: " 
+	    << instance_outer.VariadicArgFunc(3, 5, instanceA)
+	    << std::endl;
 
   return 0;
 }
