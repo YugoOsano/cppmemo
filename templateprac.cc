@@ -53,6 +53,24 @@ T min( T const & head, Types ... tail)
 {
   return min(head, min( tail ...) );
 }
+// variadic template
+//http://yuhsylphy.hateblo.jp/entry/20130609/1370716034
+struct StructA {
+  int ReturnHundred() { return 100; }
+}; 
+
+int InnerFunc(int a) {
+  return a;
+}
+int InnerFunc(int a, StructA struct_a) {
+  return a * struct_a.ReturnHundred();
+}
+
+template <class Type1, class... TypeSet>
+int VariadicArgFunc(Type1 arg1, TypeSet... argset) {
+
+  return arg1 * InnerFunc(argset...);
+}
 
 int main(int argc, char *argv[])
 {
@@ -107,5 +125,13 @@ int main(int argc, char *argv[])
   std::cout << "matd + mat2 = " << matd + mat2 << std::endl;
 
   std::cout << "matc = " << matc << std::endl;
+  
+  //--- variadic template ---
+  StructA instanceA;
+
+  std::cout << "Variadic: " << VariadicArgFunc(3, 5, instanceA)
+	    << std::endl;
+
+
   return 0;
 }
