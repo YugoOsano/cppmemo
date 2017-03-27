@@ -54,6 +54,14 @@ T min( T const & head, Types ... tail)
   return min(head, min( tail ...) );
 }
 
+//--- gain the size of an array ---
+// http://ssa.techarts.co.jp/index.php?MPL%E3%81%A8%E3%81%AF
+
+template <typename T, size_t N>
+size_t CountOf(const T(&)[N]){
+  return N;
+}
+
 int main(int argc, char *argv[])
 {
   std::cout << "Hello, World!" << std::endl;
@@ -79,6 +87,10 @@ int main(int argc, char *argv[])
       double v2 = atof(argv[1]); //-- stdlib.h is for this --
       std::cout << min(v1, v2, 3135.0) << std::endl;
     }
+  //-- array size --
+  int aarray[1000];
+  std::cout << "size of an array: " << CountOf(aarray) << std::endl;;  
+
   //-------------------
   //  boost matrix
   //-------------------
