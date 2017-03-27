@@ -53,6 +53,45 @@ T min( T const & head, Types ... tail)
 {
   return min(head, min( tail ...) );
 }
+// variadic template
+//http://yuhsylphy.hateblo.jp/entry/20130609/1370716034
+struct StructA {
+  int ReturnHundred() { return 100; }
+}; 
+
+int InnerFunc(int a) {
+  return a;
+}
+int InnerFunc(int a, StructA struct_a) {
+  return a * struct_a.ReturnHundred();
+}
+
+template <class Type1, class... TypeSet>
+int VariadicArgFunc(Type1 arg1, TypeSet... argset) {
+
+  return arg1 * InnerFunc(argset...);
+}
+
+// variadic template in a class 
+class OuterClass {
+protected:
+  int InnerFunc(int a) {
+    return a;
+  }
+  int InnerFunc(int a, StructA struct_a) {
+    std::cout << "member value: " << member_ << std::endl;
+    return a * struct_a.ReturnHundred();
+  }
+  double member_;
+public:
+  OuterClass() : member_(2.345){}
+
+  template <class Type1, class... TypeSet>
+  int VariadicArgFunc(Type1 arg1, TypeSet... argset) {
+    
+    return arg1 * InnerFunc(argset...);
+  }
+};
 
 //--- gain the size of an array ---
 // http://ssa.techarts.co.jp/index.php?MPL%E3%81%A8%E3%81%AF
@@ -119,5 +158,17 @@ int main(int argc, char *argv[])
   std::cout << "matd + mat2 = " << matd + mat2 << std::endl;
 
   std::cout << "matc = " << matc << std::endl;
+  
+  //--- variadic template ---
+  StructA instanceA;
+
+  std::cout << "Variadic: " << VariadicArgFunc(3, 5, instanceA)
+	    << std::endl;
+
+  OuterClass instance_outer;
+  std::cout << "Variadic func in class: " 
+	    << instance_outer.VariadicArgFunc(3, 5, instanceA)
+	    << std::endl;
+
   return 0;
 }
