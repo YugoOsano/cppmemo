@@ -1,11 +1,12 @@
 // basic of OpenMP
 // http://codezine.jp/article/detail/4693
 // Compile:
-// g++ -fopenmp openmphello.cc
+// g++ -fopenmp -std=c++11 openmphello.cc
 
 #include <stdio.h>
 #include <iostream>
 #include <omp.h>
+#include <vector>
 
 int main()
 {
@@ -29,9 +30,24 @@ int main()
     printf("Hello, OpenMP! %d\n", omp_get_thread_num());
     printf("How about this code? %d\n", omp_get_thread_num());
   }
+  int sum;
+#pragma omp parallel reduction(-:sum)
+  {
 #pragma omp parallel for
-  for(int i = 0; i < 5; i++)
-    printf("index: %d, thread: %d\n", i, omp_get_thread_num());
+    for(int i = 0; i < 5; i++) {
+      printf("index: %d, thread: %d\n", i, omp_get_thread_num());
+      sum = sum + i;
+      printf("sum: %d\n", sum);
+    }
+     printf("final sum: %d\n", sum);    
+  }
+  std::vector<int> vec{1,2,3,4};
 
+  // omp for range based for <- error
+  //#pragma omp parallel for
+  for (int& elem : vec)
+    printf("value: %d, thread: %d\n", elem, omp_get_thread_num());
+    
+  
   return 0;
 }
