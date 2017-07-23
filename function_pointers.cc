@@ -17,11 +17,12 @@ public:
   }
 };
 
-template<class T>
-void RepeatFunc(std::function<void(T&)> func, 
-		T&                      instance) {
+template<class FunctionType, typename ... Ts>
+//void RepeatFunc(std::function<void(T&)> func,
+void RepeatFunc(FunctionType func, 
+		Ts ...       instance) {
   for(int i = 0; i < 5; i++)
-    func(instance);
+    func(instance ...);
 } 
 
 int main(int argc, char const* argv[])
@@ -29,13 +30,18 @@ int main(int argc, char const* argv[])
   Foo     f;
  
   //https://stackoverflow.com/questions/31604893/c11-type-name-for-stdmem-fn
-  std::function<void(Foo&)> hello = std::mem_fn(&Foo::display_hello);
+  std::function<void(Foo&)> hello = 
+    std::mem_fn(&Foo::display_hello);
 
-  RepeatFunc<Foo>(hello, f);
+  RepeatFunc<std::function<void(Foo&)>, Foo>(hello, f);
 
-  auto number = std::mem_fn(&Foo::display_number);
-  auto data = std::mem_fn(&Foo::data);
- 
+  std::function<void(Foo&, int)> number = 
+    std::mem_fn(&Foo::display_number);
+
+  RepeatFunc<std::function<void(Foo&, int)>, 
+	     Foo, int>(number, f, 987);
+
+  auto data       = std::mem_fn(&Foo::data);
   auto bind_hello = std::bind(&Foo::display_hello, f);
 
   hello(f);
