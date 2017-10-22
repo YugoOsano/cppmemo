@@ -17,9 +17,8 @@ const std::vector<char> bit_set{
 
 std::string GetBinaryDigitsFromChar(const char x) {
 
-  std::vector<char> bit_set_reverse;
-  bit_set_reverse.assign(bit_set.begin(),
-			 bit_set.end());
+  std::vector<char> bit_set_reverse(bit_set.begin(),
+				    bit_set.end());
   std::reverse(bit_set_reverse.begin(),
 	       bit_set_reverse.end());
   
