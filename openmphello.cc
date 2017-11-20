@@ -47,7 +47,17 @@ int main()
   //#pragma omp parallel for
   for (int& elem : vec)
     printf("value: %d, thread: %d\n", elem, omp_get_thread_num());
-    
+
+
+  #pragma omp parallel num_threads(4)
+  {
+  //for (int i = 0; i < 32; i++) {
+    printf("barrier test: thread: %d\n", omp_get_thread_num());
+
+    #pragma omp barrier
+    printf("after barrier: thread: %d\n", omp_get_thread_num());
+  }
+  
   
   return 0;
 }
