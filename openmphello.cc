@@ -49,15 +49,21 @@ int main()
     printf("value: %d, thread: %d\n", elem, omp_get_thread_num());
 
 
-  #pragma omp parallel num_threads(4)
+  #pragma omp parallel
   {
-  //for (int i = 0; i < 32; i++) {
-    printf("barrier test: thread: %d\n", omp_get_thread_num());
+    int num_threads =  omp_get_num_threads();
 
-    #pragma omp barrier
-    printf("after barrier: thread: %d\n", omp_get_thread_num());
-  }
+    for (int i_all = 0; i_all < 8; i_all) {
+    
+      #pragma omp parallel for
+      for (int i = 0; i < num_threads; i++) { 
+	i_all++;
   
-  
+	printf("barrier test: thread: %d\n", omp_get_thread_num());
+      }
+      #pragma omp barrier
+      printf("after barrier: thread: %d\n", omp_get_thread_num());
+    }
+  }  
   return 0;
 }
