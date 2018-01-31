@@ -1,5 +1,6 @@
 #include <iostream>
 #include <typeinfo>
+#include <tuple>
 
 class Aclass{
 };
@@ -37,5 +38,16 @@ int main(){
 	    << "\nvalue2's type: "
 	    << typeid(value2).name() << std::endl;
 
+  //---- dump type ----
+  typedef std::tuple<bool, int> TupleBoolInt;
+  using TupleIntBool = std::tuple<int, bool>;
+
+  std::cout << "typedef dump: " << typeid(TupleBoolInt).name() << std::endl;
+  std::cout << "using dump: " << typeid(TupleIntBool).name() << std::endl;
+
+  auto tname = typeid(TupleBoolInt).name();
+  std::cout << "name dump: " << typeid(tname).name() << std::endl;
+  
+  
   return 0;
 }
