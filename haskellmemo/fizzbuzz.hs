@@ -6,6 +6,8 @@ fizzbuzz n
     | n `mod` 5 == 0 = fizzbuzz(n - 1) ++ ["buzz"]
 fizzbuzz n = fizzbuzz(n - 1) ++ [show n]
 
+-- the above vertical bars are refered to as guard
+
 main :: IO ()
 main = do
   putStrLn "hello"
