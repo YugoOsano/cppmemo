@@ -1,9 +1,17 @@
 module Geometry where
 
-data Shape = Tri { base, height:: Double }
-           | Rect { width, height:: Double }
+data Shape = Triangle { base,
+                        height:: Double }
+           | Rectangle { width,
+                         height:: Double }
 
-area :: Shape -> Double
-area (Tri x y) = x * y / 2
-area (Rect x y) = x * y
+area :: Shape ->
+        Double
+area (Triangle base
+               height)
+  = base
+  * height
+  / 2
+area (Rectangle base
+                height) = base * height
 
