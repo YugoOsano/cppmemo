@@ -1,5 +1,13 @@
 import Geometry
 
+data Employee = Employee
+  {
+    name :: String,
+    age  :: Int,
+    role :: Role
+  }
+data Role = Engineers | Sales | Designers
+
 -- compile: ghc helloworld.hs 
 main = do
   putStrLn "hello, world!"

@@ -12,5 +12,7 @@ main :: IO ()
 main = do
   putStrLn "hello"
   print (fizzbuzz 100)
+  -- $ operator is right-associative
+  print $ fizzbuzz 100
   
   
