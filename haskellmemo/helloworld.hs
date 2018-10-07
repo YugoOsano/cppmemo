@@ -2,6 +2,7 @@ import Geometry
 
 data Employee = Employee
   {
+    -- formula :: type
     name :: String,
     age  :: Int,
     role :: Role
