@@ -21,10 +21,14 @@ seniorEmployee (Employee name age role)
 -- ad-hoc polymorphism
 -- see: http://www.nslabs.jp/haskell-poly.rhtml
 --
+-- Updater:      the name of type class
+-- genericValue: the name of type variable
+-- multiple functions can be defined (but only 'update' is defined here) 
 class Updater genericValue where
   update :: genericValue -> genericValue  
   update    genericValue =  genericValue
 
+-- the type variable above takes Int here
 instance Updater Int where
   update    int = int + 1
 
