@@ -7,9 +7,14 @@
 #include <iostream>
 #include <omp.h>
 #include <vector>
+#include <thread>
 
 int main()
 {
+  auto n_core
+    = std::thread::hardware_concurrency;
+  std::cout << "The number of cores: " << n_core << std::endl;
+  
   std::cout << "The number of processors is: " 
 	    << omp_get_num_procs() << std::endl;
 
