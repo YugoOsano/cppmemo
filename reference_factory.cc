@@ -85,12 +85,23 @@ int main () {
   bar.Print();
 
   //-----
+  int* a = new int;
+  *a = 3;
   DataHolder data_holder;
+  data_holder.int_data_.vector_.push_back(a);
+  
   ActionOnBase(data_holder.ref_a_);
   ActionOnBase(data_holder.ref_b_);
 
   ActionOnBase(static_cast<Base&>(data_holder.data_a_));
   ActionOnBase(CastToBase(data_holder.data_a_));
 
+  VectorWrapBase& ref_vecwrap = data_holder.int_data_;
+  const int value = ActionOnIntVector(ref_vecwrap, 0);
+
+  std::cout << "value: " << value << std::endl;
+  
+  delete a;
+  
   return 0;
 }
