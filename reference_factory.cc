@@ -3,31 +3,37 @@
 
 #include <iostream>
 #include <vector>
+//--------
+struct VectorWrapBase {
+};
+template <typename T>
+struct VectorWrap : public VectorWrapBase {
 
+  T& operator[](size_t i) {return *(vector_.at(i));}
+  std::vector<T*> vector_;
+};
+
+//---------
 class Base {
 public:
   virtual ~Base()=default;
   virtual void Print()const =0;
-
-  //-- accessor to vector of different types
 };
 
+template <typename T=int>
 class DerivedA : public Base {
 public:
   void Print() const override {
     std::cout << "DerivedA" << std::endl;
   }
-protected:
-  std::vector<int> int_data_; 
 };
 
+template <typename T=int>
 class DerivedB : public Base {
 public:
   void Print() const override {
     std::cout << "DerivedB" << std::endl;
   }
-protected:
-  std::vector<double> double_data_;
 };
 
 class Factory {
@@ -39,12 +45,12 @@ public:
     return  static_cast<Base&>(Factory::derived_b_);
   }
 protected:
-  static DerivedA derived_a_;
-  static DerivedB derived_b_;
+  static DerivedA<> derived_a_;
+  static DerivedB<> derived_b_;
 };
 
-DerivedA Factory::derived_a_ = DerivedA();
-DerivedB Factory::derived_b_ = DerivedB();
+DerivedA<> Factory::derived_a_ = DerivedA<>();
+DerivedB<> Factory::derived_b_ = DerivedB<>();
 
 //------
 struct DataHolder {
@@ -53,16 +59,23 @@ struct DataHolder {
   Base& ref_a_;
   Base& ref_b_;
   
-  DerivedA data_a_;
-  DerivedB data_b_;
+  DerivedA<> data_a_;
+  DerivedB<> data_b_;
+
+  VectorWrap<int>    int_data_;
+  VectorWrap<double> double_data_;
 };
 //-----
 void ActionOnBase(Base& base) {
   base.Print();
 }
-//-----
 template <typename T>
 Base& CastToBase(T& any){return static_cast<Base&>(any);}
+//----
+int ActionOnIntVector(VectorWrapBase& vector_base, size_t index) {
+  return static_cast<VectorWrap<int>&>(vector_base)[index];
+}
+
 
 int main () {
   const Base& foo = Factory::CreateReference(true);
