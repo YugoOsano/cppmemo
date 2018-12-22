@@ -10,7 +10,8 @@
 
 -- to use in ghci:
 -- :load csv_parse
--- parseCSV
+-- parseCSV ""
+-- parseCSV "abc,def,ghi\n"
 
 import qualified Text.ParserCombinators.Parsec as PC
 
@@ -56,6 +57,6 @@ eol :: PC.GenParser Char st Char
 eol = PC.char '\n'
 
 parseCSV :: String -> Either PC.ParseError [[String]]
-parseCSV input = PC.parse csvFile "sample.csv" input
+parseCSV input = PC.parse csvFile "unknown" input
        
 main = putStrLn "Hello"
