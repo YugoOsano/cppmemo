@@ -18,6 +18,16 @@ incr_custom n = n+1 :: Int
 hf :: Int -> Int
 hf x = 1
 
+-- https://qiita.com/7shi/items/1ce76bde464b4a55c143
+-- data type must start by an Uppercase
+--  sentense structure in type of direct product:
+--   data [type] = [constructor] [field...]
+--    ([type] and [constructor] can be a same name)
+data ShowableInt = ShowableInt Int deriving (Show)
+
+funcDeriveShow :: ShowableInt -> ShowableInt
+funcDeriveShow x = x 
+
 -- to enforce evalution
 hf_enforced_eval :: Int -> Int
 hf_enforced_eval x = seq x 1 
@@ -43,3 +53,5 @@ main = do
   -- in ghci, :t print results in a type including =>.
   -- this means a typeclass constraint (see stackoverflow 9142731).
   
+  print (ShowableInt 3)
+  print $ funcDeriveShow $ ShowableInt 4
