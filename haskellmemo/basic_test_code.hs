@@ -32,9 +32,24 @@ funcDeriveShow x = x
 hf_enforced_eval :: Int -> Int
 hf_enforced_eval x = seq x 1 
 
+-- pattern match
+-- specific args need to come ahead
+func 1 = 1111
+func x = x
+
 main :: IO()
 main = do
+  -- local variable definition
+  -- (without the above do, the following print z
+  --  would be  [in print z]) 
   let x = 1
+      y = 2
+      z = x + y
+  print z
+
+  print $ func 2
+  print $ func 1
+
   -- x = x + 1
   putStrLn "Hello, World"
   -- only rhs references variables which follow where
@@ -55,3 +70,9 @@ main = do
   
   print (ShowableInt 3)
   print $ funcDeriveShow $ ShowableInt 4
+
+  -- another style of local variable
+  print w
+  where x = 1
+        y = 2
+        w = x + y
