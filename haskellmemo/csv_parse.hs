@@ -17,6 +17,14 @@ import qualified Text.ParserCombinators.Parsec as PC
 
 {- A CSV file contains 0 or more lines, each of which is terminated
    by the end-of-line character (eol). -}
+{- type of PC.many:
+   Text.Parsec.Prim.ParsecT s u m a
+   -> Text.Parsec.Prim.ParsecT s u m [a]
+
+   st is likely to stand for: state transformer
+   according to
+   https://qiita.com/7shi/items/2e9bff5d88302de1a9e9
+-}
 csvFile :: PC.GenParser Char st [[String]]
 csvFile = 
     do result <- PC.many line
