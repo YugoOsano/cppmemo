@@ -11,6 +11,8 @@ main = do
   print $ map (+2) [0 .. 10]
 
   -- map with lambda
+  -- :type of map:
+  -- (a -> b) -> [a] -> [b]
   print $ map (\x -> x+2) [0 .. 10]
 
   -- create a Maybe monad

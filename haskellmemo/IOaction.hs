@@ -9,6 +9,16 @@
    getLine >>= putStrLn
 -}
 
+-- this is equivalent to what's done in main
+{-
+main :: IO ()
+main = do
+  x <- getLine
+  y <- getLine
+  putStrLn $ "The first input is: " ++ x
+  putStrLn $ "The second input is: " ++ y
+-}
+
 main :: IO ()
 main =
   getLine >>= \x ->
