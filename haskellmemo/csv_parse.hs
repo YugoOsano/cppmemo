@@ -59,4 +59,6 @@ eol = PC.char '\n'
 parseCSV :: String -> Either PC.ParseError [[String]]
 parseCSV input = PC.parse csvFile "unknown" input
        
-main = putStrLn "Hello"
+main = putStrLn "Hello, World!"
+  --print =<< parseCSV =<< readFile "sample.csv"
+  --parseCSV text
