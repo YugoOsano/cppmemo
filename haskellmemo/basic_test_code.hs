@@ -37,6 +37,14 @@ hf_enforced_eval x = seq x 1
 func 1 = 1111
 func x = x
 
+-- a tuple is defined by simple paranthesis
+-- type of foldr is: Foldable t => (a->b->b) -> b-> t a -> b
+sumAndAverage :: [Double] -> (Double, Double)
+sumAndAverage xs = (sum, ave)
+  where sum = foldr (+) 0 xs
+        ave = sum / (fromIntegral (length xs))
+        -- type of fromIntegral's return is deducted (as Double)
+
 main :: IO()
 main = do
   -- local variable definition
@@ -71,8 +79,11 @@ main = do
   print (ShowableInt 3)
   print $ funcDeriveShow $ ShowableInt 4
 
+  print $ sumAndAverage [1,2,3,4,5]
+
   -- another style of local variable
   print w
   where x = 1
         y = 2
         w = x + y
+
