@@ -64,6 +64,12 @@ cellContent =
 eol :: PC.GenParser Char st Char
 eol = PC.char '\n'
 
+{-
+ type of PC.parse is:
+ Text.Parsec.Prim.Stream s Data.Functor.Identity.Identity t =>
+     Text.Parsec.Prim.Parsec s () a
+     -> PC.SourceName -> s -> Either PC.ParseError a
+-}
 parseCSV :: String -> Either PC.ParseError [[String]]
 parseCSV input = PC.parse csvFile "unknown" input
        
