@@ -14,6 +14,7 @@
 -- parseCSV "abc,def,ghi\n"
 
 import qualified Text.ParserCombinators.Parsec as PC
+import qualified Data.Either as EI
 
 {- A CSV file contains 0 or more lines, each of which is terminated
    by the end-of-line character (eol). -}
@@ -73,6 +74,11 @@ eol = PC.char '\n'
 parseCSV :: String -> Either PC.ParseError [[String]]
 parseCSV input = PC.parse csvFile "unknown" input
        
-main = putStrLn "Hello, World!"
+main = do 
+  allstringsinfile <- readFile "sample.csv"
+  print $ show (parseCSV allstringsinfile) 
+
+  -- show function converts every Show class' instance to a string
+  
   --print =<< parseCSV =<< readFile "sample.csv"
   --parseCSV text
