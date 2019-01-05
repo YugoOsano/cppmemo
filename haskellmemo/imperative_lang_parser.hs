@@ -73,9 +73,110 @@ languageDef =
 
 lexer = Token.makeTokenParser languageDef
 
--- whileParser :: P.Parser Stmt
--- whileParser = Token.whiteSpace >> statement
+identifier = Token.identifier lexer -- parses an identifier
+reserved   = Token.reserved   lexer -- parses a reserved name
+reservedOp = Token.reservedOp lexer -- parses an operator
+parens     = Token.parens     lexer -- parses surrounding parenthesis:
+                                    --   parens p
+                                    -- takes care of the parenthesis and
+                                    -- uses p to parse what's inside them
+integer    = Token.integer    lexer -- parses an integer
+semi       = Token.semi       lexer -- parses a semicolon
+whiteSpace = Token.whiteSpace lexer -- parses whitespace
 
-statement = undefined 
+whileParser :: P.Parser Stmt
+whileParser = whiteSpace >> statement
+
+statement :: P.Parser Stmt
+statement =   parens statement
+          P.<|> sequenceOfStmt
+ 
+sequenceOfStmt =
+   do list <- (P.sepBy1 statement' semi)
+      -- If there's only one statement return it without using Seq.
+      return $ if length list == 1 then head list else Seq list
+
+statement' :: P.Parser Stmt
+statement' =   ifStmt
+           P.<|> whileStmt
+           P.<|> skipStmt
+           P.<|> assignStmt
+
+ifStmt :: P.Parser Stmt
+ifStmt =
+  do reserved "if"
+     cond  <- bExpression
+     reserved "then"
+     stmt1 <- statement
+     reserved "else"
+     stmt2 <- statement
+     return $ If cond stmt1 stmt2
+ 
+whileStmt :: P.Parser Stmt
+whileStmt =
+  do reserved "while"
+     cond <- bExpression
+     reserved "do"
+     stmt <- statement
+     return $ While cond stmt
+ 
+assignStmt :: P.Parser Stmt
+assignStmt =
+  do var  <- identifier
+     reservedOp ":="
+     expr <- aExpression
+     return $ Assign var expr
+
+skipStmt :: P.Parser Stmt
+skipStmt = reserved "skip" >> return Skip
+
+aExpression :: P.Parser AExpr
+aExpression = Expr.buildExpressionParser aOperators aTerm
+ 
+bExpression :: P.Parser BExpr
+bExpression = Expr.buildExpressionParser bOperators bTerm
+
+aOperators = [ [Expr.Prefix (reservedOp "-"   >> return (Neg             ))          ]
+             , [Expr.Infix  (reservedOp "*"   >> return (ABinary Multiply)) Expr.AssocLeft,
+                Expr.Infix  (reservedOp "/"   >> return (ABinary Divide  )) Expr.AssocLeft]
+             , [Expr.Infix  (reservedOp "+"   >> return (ABinary Add     )) Expr.AssocLeft,
+                Expr.Infix  (reservedOp "-"   >> return (ABinary Subtract)) Expr.AssocLeft]
+              ]
+ 
+bOperators = [ [Expr.Prefix (reservedOp "not" >> return (Not             ))          ]
+             , [Expr.Infix  (reservedOp "and" >> return (BBinary And     )) Expr.AssocLeft,
+                Expr.Infix  (reservedOp "or"  >> return (BBinary Or      )) Expr.AssocLeft]
+             ]
+
+aTerm =  parens aExpression
+     P.<|> Monad.liftM Var identifier
+     P.<|> Monad.liftM IntConst integer
+
+bTerm =  parens bExpression
+     P.<|> (reserved "true"  >> return (BoolConst True ))
+     P.<|> (reserved "false" >> return (BoolConst False))
+     P.<|> rExpression
+
+rExpression =
+  do a1 <- aExpression
+     op <- relation
+     a2 <- aExpression
+     return $ RBinary op a1 a2
+ 
+relation =   (reservedOp ">" >> return Greater)
+         P.<|> (reservedOp "<" >> return Less)
+
+parseString :: String -> Stmt
+parseString str =
+  case P.parse whileParser "" str of
+     Left e  -> error $ show e
+     Right r -> r
+ 
+parseFile :: String -> IO Stmt
+parseFile file =
+  do program  <- readFile file
+     case P.parse whileParser "" program of
+       Left e  -> print e >> fail "parse error"
+       Right r -> return r
 
 main = putStrLn "Hello"
