@@ -2,9 +2,15 @@
   a sample from:
   https://wiki.haskell.org/Parsing_a_simple_imperative_language
 
+  reference of Parsec.Token
+  http://hackage.haskell.org/package/parsec-3.1.13.0/docs/Text-Parsec-Token.html
+
   What is token?
   -> string with an assigned and thus identified meaning
   https://en.wikipedia.org/wiki/Lexical_analysis
+
+  lexical analysis in a nutshell (yacc & lex)
+  http://kmaebashi.com/programmer/devlang/yacclex.html
 -}
 
 import qualified System.IO as IO
