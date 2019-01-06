@@ -26,6 +26,10 @@ data BBinOp = And | Or deriving (Show)
 -- Relational operators
 data RBinOp = Greater | Less deriving (Show)
 
+{-
+  lexical analysis is a recursive job.
+  Structures BExpr, AExpr, Stmt owe to the recursion
+-}
 -- boolean expressions
 data BExpr = BoolConst Bool
             | Not BExpr
@@ -46,7 +50,7 @@ data AExpr = Var String
             | ABinary ABinOp AExpr AExpr
               deriving (Show)
 
--- statement
+-- statement: Seq is constructor
 data Stmt = Seq [Stmt]
            | Assign String AExpr
            | If BExpr Stmt Stmt
@@ -184,5 +188,10 @@ parseFile file =
      case P.parse whileParser "" program of
        Left e  -> print e >> fail "parse error"
        Right r -> return r
+
+{-
+  to run with a file in ghci:
+  parseFile "sample_imperative_lang.txt"
+-}
 
 main = putStrLn "Hello"
