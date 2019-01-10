@@ -44,6 +44,16 @@ compositeIncr x = y
         tmp2 = incr_custom tmp1
         y    = incr_custom tmp2
 
+-- let version
+-- (let is an expression, can be located anywhere:
+--  see https://qiita.com/YusukeHosonuma/items/5da9847db16d33f27a06)
+compositeIncrLet :: Int -> Int
+compositeIncrLet x =
+  let tmp1 = incr_custom x
+      tmp2 = incr_custom tmp1
+      y    = incr_custom tmp2
+    in y
+
 -- a tuple is defined by simple paranthesis
 -- type of foldr is: Foldable t => (a->b->b) -> b-> t a -> b
 sumAndAverage :: [Double] -> (Double, Double)
@@ -64,7 +74,8 @@ main = do
 
   print $ func 2
   print $ func 1
-  print $ compositeIncr 101
+  print $ compositeIncr    101
+  print $ compositeIncrLet 101
 
   -- x = x + 1
   putStrLn "Hello, World"
