@@ -37,6 +37,13 @@ hf_enforced_eval x = seq x 1
 func 1 = 1111
 func x = x
 
+-- composite function
+compositeIncr ::  Int -> Int
+compositeIncr x = y
+  where tmp1 = incr_custom x
+        tmp2 = incr_custom tmp1
+        y    = incr_custom tmp2
+
 -- a tuple is defined by simple paranthesis
 -- type of foldr is: Foldable t => (a->b->b) -> b-> t a -> b
 sumAndAverage :: [Double] -> (Double, Double)
@@ -57,6 +64,7 @@ main = do
 
   print $ func 2
   print $ func 1
+  print $ compositeIncr 101
 
   -- x = x + 1
   putStrLn "Hello, World"
