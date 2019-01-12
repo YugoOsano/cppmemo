@@ -11,6 +11,15 @@
 
   lexical analysis in a nutshell (yacc & lex)
   http://kmaebashi.com/programmer/devlang/yacclex.html
+
+  String conversion in Haskell
+  https://qiita.com/satosystems/items/e07e9907e4da9ab853fc
+
+  Attoparsec or Parsec
+  https://stackoverflow.com/questions/19208231/attoparsec-or-parsec-in-haskell
+
+  parse of double quotation
+  https://stackoverflow.com/questions/24106314/parser-for-quoted-string-using-parsec/24106749
 -}
 
 import qualified System.IO as IO
