@@ -51,15 +51,21 @@ higherOrder f x =
 
 
 {-
- what's equivalent to following in Python:
+ what's equivalent to following in C:
+  for (int i=0; i<10; i++) {
+    b[i] = i + a[i];
+  }
+  use of elements and indices both needs to be
+  taken as a pair of lists;
 
- x = x0
- for i, elem in enumerate(list):
-   x = f(i, elem)
+  or to make it better:
+  https://stackoverflow.com/questions/6472883/using-list-elements-and-indices-together
 -}
--- forWithEnumerateSubstitute :: [Int] -> [a] -> b
--- forWithEnumerateSubstitute 
-
+forWithEnumerateSubstitute :: [Int] -> [Int] -> [Int]
+forWithEnumerateSubstitute xs indices = 
+  [ fst(x_index) + snd(x_index) |
+    x_index <- (zip xs indices)] :: [Int]
+  
 -- composite function
 compositeIncr ::  Int -> Int
 compositeIncr x = y
@@ -111,6 +117,7 @@ main = do
   -}
   print $ map funcGuard [0..9]
   print [funcGuard x | x <- [0..9]]
+  print $ forWithEnumerateSubstitute [0,1,2] [0, 100, 200]
 
   print $ compositeIncr    101
   print $ compositeIncrLet 101
