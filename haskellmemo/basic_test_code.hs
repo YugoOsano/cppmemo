@@ -37,12 +37,40 @@ hf_enforced_eval x = seq x 1
 func 1 = 1111
 func x = x
 
+funcGuard x 
+  | x == 1  = 976
+  | x >  1  = x
+  | otherwise = 1976
+
+{- create my own higher order function
+   here, the type is automatically deducted as
+   (Enum t1, Num t1) => (t1 -> t) -> t1 -> [t]
+-}
+higherOrder f x =
+  [f elem | elem <- [x..(x+2)]]
+
+
+{-
+ what's equivalent to following in Python:
+
+ x = x0
+ for i, elem in enumerate(list):
+   x = f(i, elem)
+-}
+-- forWithEnumerateSubstitute :: [Int] -> [a] -> b
+-- forWithEnumerateSubstitute 
+
 -- composite function
 compositeIncr ::  Int -> Int
 compositeIncr x = y
   where tmp1 = incr_custom x
         tmp2 = incr_custom tmp1
-        y    = incr_custom tmp2
+        -- logic can be nested by a lambda
+        -- ('where' can't be used therein)
+        y    = (\v ->
+                 let tmp_inner = incr_custom v
+                     w         = incr_custom tmp_inner
+                 in w) tmp2
 
 -- let version
 -- (let is an expression, can be located anywhere:
@@ -74,6 +102,16 @@ main = do
 
   print $ func 2
   print $ func 1
+  print $ funcGuard 2
+  print $ funcGuard 1
+  print $ funcGuard 0
+  {-
+   (range-based) for loop in Python can be covered
+   by map with a list or list comprehension
+  -}
+  print $ map funcGuard [0..9]
+  print [funcGuard x | x <- [0..9]]
+
   print $ compositeIncr    101
   print $ compositeIncrLet 101
 
