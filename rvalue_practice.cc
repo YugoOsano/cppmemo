@@ -15,20 +15,21 @@ class Xclass
 {
 private:
   char *ptr;
-
 public:
-  Xclass()
+  int  memint_;
+
+  Xclass() : memint_(23)
   {
     ptr = new char[1000];
     std::cout << "constructor" << std::endl;
   }
-  Xclass( Xclass const & r )
+  Xclass( Xclass const & r ) : memint_(45)
   {
     ptr = new char[1000];
     std::copy( &ptr[0], &ptr[1000], &r.ptr[0] );
     std::cout << "copy constructor" << std::endl;
   }
-  Xclass( Xclass && r )
+  Xclass( Xclass && r )  : memint_(67)
   {
     ptr   = r.ptr ;
     r.ptr = nullptr ;
@@ -50,7 +51,7 @@ void template_f(T && t)
   X x(std::forward<T>(t));
 }
 
-int h(int&& x){
+int h_two_times(const int&& x){
   return x * 2;
 }
 
@@ -94,15 +95,24 @@ int main ()
   Xclass x4 = std::move(x2);
   //Xclass x5 = x2;// Segmentation fault
 
+  Xclass&& rref_xclass = Xclass();
+  
   std::cout << "&x2: " << &x2 << std::endl;
   std::cout << "&x4: " << &x4 << std::endl;
 
   int&& a = 10;
 
   std::cout << "a: " << a << std::endl; 
-  std::cout << "h(a): " << h(static_cast<int&&>(a)) << std::endl; 
-  std::cout << "h(a): " << h(std::move(a)) << std::endl; 
+  std::cout << "h_two_times(a): " << h_two_times(static_cast<int&&>(a)) << std::endl; 
+  std::cout << "h_two_times(a): " << h_two_times(std::move(a)) << std::endl; 
 
+  std::cout << "rref_xclass.memint_: " << rref_xclass.memint_ << std::endl;
+
+  //Xclass x6(rref_xclass);  // -- this will call copy constructor
+  Xclass x6(static_cast<Xclass&&>(rref_xclass));
+
+  std::cout << "rref_xclass.memint_: " << rref_xclass.memint_ << std::endl;
+  
   // -- atomic --
   std::atomic<int> ai0{ 0 } ;
 
