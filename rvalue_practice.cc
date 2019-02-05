@@ -1,10 +1,15 @@
 // http://cpplover.blogspot.jp/2009/11/rvalue-reference_23.html
+// https://qiita.com/go_astrayer/items/5d85565e992487daa618
 #include <iostream>
 #include <algorithm>
 #include <utility>
 #include <atomic>
 
-struct X{};
+struct X{
+  X() : member_(100){}
+
+  int member_;
+};
 
 class Xclass
 {
@@ -49,8 +54,18 @@ int h(int&& x){
   return x * 2;
 }
 
+X ReturnX() {
+  X xinstance;
+  // std::move is equivalent to a cast to T&&
+  // https://stackoverflow.com/questions/52104649/c11-rvalue-reference-vs-const-reference
+  //return std::move(xinstance);
+  return static_cast<X&&>(xinstance);
+}
+
 int main ()
 {
+  const X&& rref_x = ReturnX();
+  
   X x;
 
   f(x);
