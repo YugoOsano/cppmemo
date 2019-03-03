@@ -7,20 +7,26 @@ int n = 4, W = 5;
 int w[MAX_N] = {2,1,3,2};
 int v[MAX_N] = {3,2,4,2};
 
+//-- see stack by bt command in gdb
 //-- i th item
-int rec(int i, int weight_limit) {
-  int res;
+int rec(int i, int remaining_weight_capacity) {
+  printf("%d th item picked; remaining capacity: %d\n",
+	 i, remaining_weight_capacity);
+
   if (i == n) {
     //-- no remaining
-    res = 0;
-  } else if (weight_limit < w[i]) {
-    // weight of ith item is over capacity
-    res = rec(i + 1, weight_limit);
-  } else {
-    res = std::max(rec(i + 1, weight_limit), // weight of ith item is over capacity
-		   rec(i + 1, weight_limit - w[i]) + v[i]);// take ith item in
+    return 0;
+  } else if (remaining_weight_capacity < w[i]) {
+    // if the weight of ith item is over capacity, pick the next
+    return rec(i + 1, remaining_weight_capacity);
   }
-  return res;
+  return
+    std::max(
+	     // weight of ith item is over capacity
+	     rec(i + 1, remaining_weight_capacity),
+	     // take ith item in
+	     rec(i + 1, remaining_weight_capacity - w[i]) + v[i]
+	     );
 }
 
 void solve() {
