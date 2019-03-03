@@ -26,6 +26,7 @@
 #include <vector>
 #include <tuple>
 #include <cassert>
+#include <stdio.h>
 
 std::tuple <double, double, std::vector<bool>>
   GetWeightValueIndicesList(const std::vector<double>& weights,
@@ -85,8 +86,10 @@ std::tuple <double, double, std::vector<bool>>
 
 
 int main () {
-  GetWeightValueIndicesList(std::vector<double>{2,1,3,2},
-			    std::vector<double>{3,2,4,2},
-			    10000);
+  const std::tuple <double, double, std::vector<bool>>& result
+    = GetWeightValueIndicesList(std::vector<double>{2,1,3,2},
+				std::vector<double>{3,2,4,2},
+				10000);
+  printf("max value: %f\n", std::get<0>(result));
   return 0;
 }
