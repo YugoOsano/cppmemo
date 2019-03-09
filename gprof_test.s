@@ -1,3 +1,6 @@
+	# Wikibook article on X86 gas assembler
+	# https://ja.wikibooks.org/wiki/X86%E3%82%A2%E3%82%BB%E3%83%B3%E3%83%96%E3%83%A9/GAS%E3%81%A7%E3%81%AE%E6%96%87%E6%B3%95
+	# a line starting by a dot is an assembler directive (pseudo command)
 	.file	"gprof_test.cc"
 	.text
 	.globl	_Z1av
@@ -8,7 +11,7 @@ _Z1av:
 	pushq	%rbp
 	.cfi_def_cfa_offset 16
 	.cfi_offset 6, -16
-	movq	%rsp, %rbp
+	movq	%rsp, %rbp  # (mnemonic) (source) (destination)
 	.cfi_def_cfa_register 6
 	movl	$0, -8(%rbp)
 	movl	$0, -4(%rbp)
