@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <iostream>
+#include <deque>
 
 class Node {
 public:
@@ -46,7 +47,46 @@ bool DepthFirstSearch(const int                target_label,
   }
   return false;
 }
- 
+
+bool BreadthFirstSearch(const int                target_label,
+			Node&                    node,
+			std::vector<Node>&       graph) {
+  std::deque<int> label_queue;
+  label_queue.push_back(node.label_);
+
+  while (label_queue.size() > 0) {
+    const int queue_size = label_queue.size();
+
+    std::vector<int> labels_to_add;
+    //-- loop about node remaining in the queue
+    for (const int label : label_queue) {
+      Node& ref_node = graph.at(label);
+      //-- loop about connected nodes --
+      for (const int label_connected_node : ref_node.labels_connected_node_) {
+	if (!graph.at(label_connected_node).is_visited_) {
+	  graph.at(label_connected_node).is_visited_ = true;
+	  labels_to_add.push_back(label_connected_node);
+	  std::cout << label_connected_node << " added to the queue." << std::endl;
+	  if (label_connected_node == target_label) {
+	    std::cout << "target: " << target_label << " found." << std::endl;
+	    return true;
+	  }
+	}
+      }
+    }
+    //-- add labels
+    for (const int label_to_add : labels_to_add)
+      label_queue.push_back(label_to_add);
+
+    //-- remove scanned labels
+    for (int i=0; i<queue_size; i++) {
+      std::cout << label_queue.front() << " will be popped." << std::endl;
+      label_queue.pop_front();
+    }
+  }
+  return false;
+}
+
 int main () {
   // DFS will go by: 0->1->3->2->4->5
   std::vector<Node> graph {
@@ -57,7 +97,8 @@ int main () {
       Node(4, std::vector<int>{}),//4
       Node(5, std::vector<int>{})//5
   };
-  DepthFirstSearch(6, graph.at(0), graph);
+  //DepthFirstSearch(6, graph.at(0), graph);
+  BreadthFirstSearch(6, graph.at(0), graph);
   
   return 0;
 }
