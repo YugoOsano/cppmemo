@@ -48,6 +48,15 @@ bool DepthFirstSearch(const int                target_label,
   return false;
 }
 
+//bool DepthFirstSearchWithStack(const int                target_label,
+//			       const int                start_label,
+//			       const std::vector<Node>& graph) {
+  //-- deep copy of the given graph
+//  std::vector<Node> 
+  
+//  std::deque<int> label_queue;
+
+
 bool BreadthFirstSearch(const int                target_label,
 			Node&                    node,
 			std::vector<Node>&       graph) {
