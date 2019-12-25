@@ -27,3 +27,6 @@ int main () {
   return_one();
   return 0;
 }
+
+//-- x86 lea is Load Effective Address
+//   http://suu-g.hateblo.jp/entry/20080505/1210012224
