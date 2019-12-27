@@ -30,8 +30,10 @@ std::list<T> QuickSortFunctional(const std::list<T>& list,
     sorted_list.push_back(list.front());
     return std::move(sorted_list);
   }
-  const auto& minmax = std::minmax_element(list.cbegin(),
-					   list.cend());
+  using IterType = decltype(list.cbegin());
+  const std::pair<IterType, IterType>& minmax
+             = std::minmax_element(list.cbegin(),
+				   list.cend());
   const T middle = (*minmax.first + *minmax.second) / 2;
   std::list<T> upper_list, lower_list;
 
