@@ -47,12 +47,13 @@ std::list<T> QuickSortFunctional(const std::list<T>& list,
 				    sorted_list);
   return std::move(sorted_list);
 }
-//-- wrapper class to see no copy happen
+//-- wrapper class to prevent copy
 //   ref: https://stackoverflow.com/questions/19826376/insert-into-vector-having-objects-without-copy-constructor
 template <typename T>
 struct SortedList {
   SortedList()=default;
   SortedList(const SortedList&)=delete;
+  SortedList& operator=(const SortedList&)=delete;
   SortedList(SortedList&&) noexcept =default;
   SortedList& operator=(SortedList&&) noexcept=default;
   std::list<T> list_;
