@@ -41,7 +41,42 @@ void solve() {
   printf("%d\n", rec(0, W));
 }
 
+//-- create the following search tree (naive version) --
+/*
+(start: -1)
+|         \     \   \ \
+0          1     2   3 E
+| \  \ \   |\\   |\  |
+1  2  3 E  2 3E  3 E E
+|\\ \\ \   |\ \  |
+2 3E 3E E  3 E E E
+|\ \  \    |
+3 E E  E   E
+|
+(End: 4)
+ */
+void Search(const int index,
+	    const int w_sum,
+	    const int v_sum,
+	    const int n_of_item) {
+  if (index == n_of_item) {
+    printf("index: %d, sum of weight: %d, sum of value: %d\n",
+	   index, w_sum, v_sum);
+    if (w_sum <= 5)
+      printf("weight OK\n");
+    return;
+  }
+  //-- loop over index after self
+  for (int i = index + 1; i <= n_of_item; i++) {
+    Search(i,
+	   w_sum + w[index],
+	   v_sum + v[index],
+	   n_of_item);
+  }
+}
+
 int main() {
-  solve();
+  //solve();
+  Search (-1, 0, 0, n);
   return 0;
 }
