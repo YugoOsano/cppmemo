@@ -3,6 +3,8 @@
 #include <string>
 #include <set>
 #include <map>
+#include <cmath>
+#include <boost/dynamic_bitset.hpp>
 
 //--
 using Type = std::vector<std::string>;
@@ -49,6 +51,22 @@ std::set<size_t> DumpCombination(
   return to_return;
 }
 
+//-- bitset version
+void DumpCombinationWithBitset(const Type& string_list) {
+  const size_t length = string_list.size();
+
+  for (size_t i = 0; i < std::pow(2, length); i++) {
+    const boost::dynamic_bitset<> bit_list(length, i);
+    for (size_t i_bit = 0; i_bit < length; i_bit++) {
+      if (bit_list[i_bit])
+	std::cout << string_list.at(i_bit) << ", ";
+      else
+	std::cout << "_, ";
+    }
+    std::cout << std::endl;
+  }
+}
+
 int main() {
   std::vector<std::string> phonetic {"xray", "alpha", "romeo", "juliet"};
   std::vector<std::string> empty_vec{};
@@ -58,5 +76,6 @@ int main() {
 		  phonetic.begin(),
 		  empty_vec,
 		  dp_recorder);
+  DumpCombinationWithBitset(phonetic);
   return 0;
 }
