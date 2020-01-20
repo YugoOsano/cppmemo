@@ -56,6 +56,7 @@ void DumpCombinationWithBitset(const Type& string_list) {
   const size_t length = string_list.size();
 
   for (size_t i = 0; i < std::pow(2, length); i++) {
+    //-- dynamic_bitset is used as std::bitset needs length to be fixed
     const boost::dynamic_bitset<> bit_list(length, i);
     for (size_t i_bit = 0; i_bit < length; i_bit++) {
       if (bit_list[i_bit])
