@@ -55,6 +55,7 @@ std::set<size_t> DumpCombination(
 void DumpCombinationWithBitset(const Type& string_list) {
   const size_t length = string_list.size();
 
+  std::cout << "number of true is shown at the last of lines." << std::endl;
   for (size_t i = 0; i < std::pow(2, length); i++) {
     //-- dynamic_bitset is used as std::bitset needs length to be fixed
     const boost::dynamic_bitset<> bit_list(length, i);
@@ -64,7 +65,7 @@ void DumpCombinationWithBitset(const Type& string_list) {
       else
 	std::cout << "_, ";
     }
-    std::cout << std::endl;
+    std::cout << bit_list.count() << std::endl;
   }
 }
 
