@@ -60,7 +60,11 @@ void DumpCombinationWithBitset(const Type& string_list) {
     //-- dynamic_bitset is used as std::bitset needs length to be fixed
     const boost::dynamic_bitset<> bit_list(length, i);
     for (size_t i_bit = 0; i_bit < length; i_bit++) {
-      if (bit_list[i_bit])
+      //-- negative value on bit operation is undefined.
+      const size_t bit_mask = (i_bit == 0) ? 0 :
+	                                    (1 << (i_bit - 1));
+      // (i_bit, mask) will be (0,0),(1,1),(2,2),(3,4),(4,8),...
+      if (i & bit_mask) // equivalent to if (bit_list[i_bit])
 	std::cout << string_list.at(i_bit) << ", ";
       else
 	std::cout << "_, ";
