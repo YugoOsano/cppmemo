@@ -11,12 +11,38 @@
 
 #include <iostream>
 #include <asio.hpp>
+#include <vector>
+#include <string>
 
-int main () {
+// Modern C++ Challenge Q95
+std::vector<std::string> GetIPAddress(std::string const& hostname) {
+  std::vector<std::string> ips;
+
+  try {
+    asio::io_context context;
+    asio::ip::tcp::resolver resolver(context);
+    auto endpoints = resolver.resolve(asio::ip::tcp::v4(),
+				      hostname.c_str(), "");
+    for (auto const& e : endpoints)
+      ips.push_back(e.endpoint().address().to_string());
+
+  } catch (std::exception const& e) {
+    std::cerr << "exception: " << e.what() << std::endl;
+  }
+  return ips;
+}
+void HelloAsio() {
   asio::io_context io;
   asio::steady_timer t(io, asio::chrono::seconds(5));
 
   t.wait();
   std::cout << "Hello, world!" << std::endl;
+}
+int main () {
+  //HelloAsio();
+  const std::vector<std::string>& ips
+    = GetIPAddress("github.com");
+  for (auto const& ip : ips)
+    std::cout << ip << std::endl;
   return 0;
 }
