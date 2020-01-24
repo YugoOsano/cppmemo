@@ -17,3 +17,8 @@ git fetch
 git diff FETCH_HEAD
 git merge FETCH_HEAD
 http://www.atmarkit.co.jp/ait/articles/1207/11/news131_3.html
+
+#-- change g++ default version
+https://askubuntu.com/questions/26498/how-to-choose-the-default-gcc-and-g-version
+sudo rm /usr/bin/g++
+sudo ln -s /usr/bin/x86_64-linux-gnu-g++-9 /usr/bin/g++
