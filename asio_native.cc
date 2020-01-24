@@ -19,6 +19,7 @@ std::vector<std::string> GetIPAddress(std::string const& hostname) {
   std::vector<std::string> ips;
 
   try {
+    // see: https://en.wikipedia.org/wiki/Context_(computing)
     asio::io_context context;
     asio::ip::tcp::resolver resolver(context);
     auto endpoints = resolver.resolve(asio::ip::tcp::v4(),
