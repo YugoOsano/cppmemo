@@ -22,3 +22,13 @@ http://www.atmarkit.co.jp/ait/articles/1207/11/news131_3.html
 https://askubuntu.com/questions/26498/how-to-choose-the-default-gcc-and-g-version
 sudo rm /usr/bin/g++
 sudo ln -s /usr/bin/x86_64-linux-gnu-g++-9 /usr/bin/g++
+
+#-- undo unzip command --
+ls -lt | grep Apr | grep 28 | awk '{print $9}' | xargs rm
+
+#-- install cryptopp++ ---
+apt-cache pkgnames | grep -i crypto++
+ -- packages shown --
+sudo apt-get install [packages]
+
+-> now #include <cryptopp/integer.h> etc. can be used
