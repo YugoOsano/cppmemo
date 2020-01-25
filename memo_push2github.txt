@@ -32,3 +32,9 @@ apt-cache pkgnames | grep -i crypto++
 sudo apt-get install [packages]
 
 -> now #include <cryptopp/integer.h> etc. can be used
+
+#-- edit binary --
+ghex [binary file]
+M-x hexl-find-file (in Emacs)
+https://www.atmarkit.co.jp/flinux/rensai/linuxtips/124editbinary.html
+
