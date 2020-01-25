@@ -38,3 +38,21 @@ ghex [binary file]
 M-x hexl-find-file (in Emacs)
 https://www.atmarkit.co.jp/flinux/rensai/linuxtips/124editbinary.html
 
+# tee -a [file]
+# appends strings typed from standard input
+
+#-- latest R install
+#https://qiita.com/JeJeNeNo/items/43fc95c4710c668e86a2
+
+sudo vim /etc/apt/sources.list
+  # append apt source as follows
+  ## For R package
+  deb https://cran.rstudio.com/bin/linux/ubuntu xenial-cran35/
+
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+sudo apt update
+sudo apt install r-base
+R
+
+# create precompiled header
+http://stackoverflow.com/questions/58841/precompiled-headers-with-gcc
