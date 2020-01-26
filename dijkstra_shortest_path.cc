@@ -50,14 +50,26 @@ Graph make_graph()
 
     return Graph(edges.begin(), edges.end(), weights.begin(), N);
 }
+// practice about boost::graph
+// https://www.boost.org/doc/libs/1_67_0/libs/graph/doc/adjacency_list.html
+void HelloGraph(const Graph& g) {
+  auto iter = boost::vertices(g);
+  // type of first is:
+  // class boost::range_detail::integer_iterator<unsigned long>
+  auto first  = iter.first;
+  std::cout << *first << std::endl;//0
+  auto second = iter.second;
+  std::cout << *second << std::endl;//8
+}
 
 int main()
 {
     const Graph g = make_graph();
-    const Vertex from = S; // 開始地点
-    const Vertex to = Z; // 目的地
+    HelloGraph(g);
+    const Vertex from = S; // start point
+    const Vertex to = Z; // goal
 
-    // 最短経路を計算
+    // shortest path
     std::vector<Vertex> parents(boost::num_vertices(g));
     boost::dijkstra_shortest_paths(g, from,
                 boost::predecessor_map(&parents[0]));
