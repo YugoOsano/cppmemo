@@ -12,3 +12,10 @@
  ;; If there is more than one, they won't work right.
  )
 
+;; update to the latest
+;; https://qiita.com/lis_t_s/items/3735838ba21af8052041
+sudo add-apt-repository ppa:kelleyk/emacs
+sudo apt update
+apt-cache pkgnames | grep -i emacs
+sudo apt install emacs26
+sudo update-alternatives --config emacs

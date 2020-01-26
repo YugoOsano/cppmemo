@@ -9,6 +9,7 @@
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/assign/list_of.hpp>
 
+// -- S of vecS/listS means Stable descriptor of vertex/edge
 typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS,
     boost::no_property, boost::property<boost::edge_weight_t, int> > Graph;
 typedef std::pair<int, int>                             Edge;
