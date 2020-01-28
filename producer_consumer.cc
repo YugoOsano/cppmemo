@@ -1,6 +1,11 @@
 // transcribed from
 // https://cutlassfish.wordpress.com/2016/09/11/c-%E3%81%A7-producer-consumer-%E3%83%91%E3%82%BF%E3%83%BC%E3%83%B3/
 
+// g++ -pthread [this file]
+
+// debugging mutex lock
+// https://46dogs.blogspot.com/2012/06/debugging-mutex-locks-in-threaded.html
+
 #include <vector>
 #include <deque>
 #include <string>
@@ -42,11 +47,12 @@ private:
 
 class Printer {
 public:
+  // The consumer side (Printer) is multi-threaded
   explicit Printer(int threadCount, int queueSize) :
     isTerminationRequested_(false),
     queue_(queueSize) {
     for (int n=0; n<threadCount; n++) {
-      threads_.emplace_back(std::thread([](int){}, n));
+      threads_.emplace_back(std::thread(main_, n));
     }
   }
   ~Printer() {
@@ -97,8 +103,8 @@ private:
 #include <sstream>
 
 int main () {
-  Printer printer(5,10);
-  for (int i=0; i<1000; i++) {
+  Printer printer(2,10);// thread count, queue size
+  for (int i=0; i<100; i++) {
     std::stringstream ss;
     ss << "hello world " << i;
     while (!printer.Append(std::move(ss.str()))) {
