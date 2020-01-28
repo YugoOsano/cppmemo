@@ -2,6 +2,12 @@
 // to start xinetd,
 // sudo apt-get install xinetd
 
+// to stop warnings about implicit function declaration:
+// #include <string.h> for memset, <unistd.h> for close
+// see StackOverFlow 34897803, 19472546
+
+#include <string.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>
