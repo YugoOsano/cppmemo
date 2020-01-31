@@ -1,6 +1,8 @@
 // 'Normal Linux Programming' by M.Aoki
 // p-258
 // to run; ./a.out /bin/echo OK
+// to see all system calls,
+// strace ./a.out /bin/echo OK
 
 #include <unistd.h>
 #include <stdio.h>
@@ -16,9 +18,11 @@ int main (int argc, char *argv[]) {
     fprintf(stderr, "number of arg is wrong.\n");
     exit(1);
   }
-  
+  /* fork duplicates itself as a new process;
+     both the original and duplicated is taken to call the fork().
+   */
   pid = fork();
-  printf("%d\n", pid);
+  printf("pid returned by fork(): %d\n", pid);
 
   if (pid < 0){
     fprintf(stderr, "fork failed.\n");
@@ -26,6 +30,8 @@ int main (int argc, char *argv[]) {
   }
 
   if (pid == 0) { /* child process */
+    /* l of execl means that command line arguments 
+       are passed as an argument list */
     execl(argv[1], argv[1], argv[2], NULL);
     perror(argv[1]);
     exit(99);
@@ -33,6 +39,7 @@ int main (int argc, char *argv[]) {
   else { /* parent process */
     int status;
 
+    /* waitpid waits for the end of the forked process */
     waitpid(pid, &status, 0);
     printf("child (PID=%d) finished; ", pid);
     if (WIFEXITED(status))
