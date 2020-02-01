@@ -77,3 +77,14 @@ int main(int argc, char *argv[]) {
   exit(0);
   return 0;
 }
+/*
+  Note: network preparation
+  seen: https://financial-it-engineer.hatenablog.com/entry/20140901/1409585452
+  installed nmap: sudo apt-get install nmap
+  nmap is 'Network Mapper' to use security auditing
+
+  to check xinetd status:
+  /etc/xinit.d/xinetd status
+  to check open port:
+  nmap localhost
+ */
