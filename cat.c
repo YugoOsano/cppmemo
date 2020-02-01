@@ -34,6 +34,11 @@ do_cat (const char *path) {
 
   fd = open(path, O_RDONLY);
   if (fd < 0) die(path);
+
+  /* set the offset of file descriptor:
+     l stands for long (int)
+   */
+  lseek(fd, 10, SEEK_SET);
   for (;;) {
     n = read(fd, buf, sizeof buf);
     if (n < 0) die(path);
@@ -48,6 +53,7 @@ static void die(const char* s) {
   exit(1);   /* stdlib.h */
 }
 /*
+  Note (1)
   StackOverFlow 62936
   What does the number in parentheses shown after Unix command names in manpages mean?
   1 General commands
@@ -58,4 +64,7 @@ static void die(const char* s) {
   6 Games and screensavers
   7 Miscellanea
   8 System administration commands and daemons
+
+  Note(2)
+  file descriptors are listed at /proc/[process id]/fd/
  */

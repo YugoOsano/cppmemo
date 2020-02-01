@@ -113,4 +113,8 @@ int main () {
   }	
   return 0;
 }
-
+// Note:
+// strace -c [executable] lists system calls in summary;
+// it presents clone() is used to create a new thread.
+// see follows for thread
+// https://postd.cc/raw-linux-threads-via-system-calls/
