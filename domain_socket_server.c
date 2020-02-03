@@ -56,7 +56,8 @@ int main(int argc, char *argv[]) {
   }
 
   while (1) {
-    /* accept returns file descriptor */
+    /* accept returns file descriptor;
+     * this waits for client's writing */
     if ( (cl = accept(fd, NULL, NULL)) == -1) {
       perror("accept error");
       continue;
