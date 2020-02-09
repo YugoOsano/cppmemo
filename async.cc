@@ -1,5 +1,8 @@
 //https://thispointer.com/c11-multithreading-part-9-stdasync-tutorial-example/
 // g++ -std=c++11 -pthread async.cc
+
+// rt_signal is called as shown by strace; see:
+//https://stackoverflow.com/questions/12889116/what-is-the-difference-between-signal-and-rt-signal-syscalls-in-linux
 #include <iostream>
 #include <string>
 #include <chrono>
