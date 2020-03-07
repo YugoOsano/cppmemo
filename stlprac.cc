@@ -3,6 +3,7 @@
 #include <set>
 #include <map>
 #include <random>
+#include <algorithm>
 
 //-- prepare a class to use as a member of SampleClass --
 // default constructor and copy constructor are needed to
@@ -175,5 +176,16 @@ int main(int argc, char *argv[])
   for (int i=0; i<20; i++)
     std::cout << dist_int(engine) << ", ";
   std::cout << std::endl;
+
+  //-- Replacing part of std::vector by smaller std::vector
+  // https://stackoverflow.com/questions/28013793/replacing-part-of-stdvector-by-smaller-stdvector
+  {
+    std::vector<int> input = { 0, 0, 1, 1, 2, 22, 3, 33, 99 };
+    std::vector<int> a = { 1, 2, 3 };
+    std::vector<int> b = { 4, 5, 6, 7, 8 };
+
+    std::copy(std::begin(a), std::end(a), std::begin(input));
+    std::copy(std::begin(b), std::end(b), std::begin(input) + a.size());
+  }
   return 0;
 }
