@@ -18,8 +18,10 @@ bool next_permutation_trans(BidirIt first, BidirIt last)
         i1 = i;
 	//-- i steps back (then compared);
 	//   this if statement means search of
-	//   first 'ordered' pairs of elements like 'ab'
-	//   in the reverse direction.
+	//   initial 'ordered' pairs of elements like 'ab'
+	//   in the reverse direction;
+	//   In "abcd" for example, "cd" is the initial ordered pair
+	//   from the last of the string.
         if (*--i < *i1) {
             i2 = last;
             while (!(*i < *--i2))
@@ -36,10 +38,24 @@ bool next_permutation_trans(BidirIt first, BidirIt last)
 }
 
 int main () {
-  std::string s("aba");
+  std::string s("ABBC");//("aba");
   std::sort(s.begin(), s.end());
   do {
     std::cout << s << '\n';
   } while (next_permutation_trans(s.begin(), s.end()));
   return 0;
 }
+/* string "ABBC"'s sequence
+ABBC
+ABCB
+ACBB
+BABC
+BACB
+BBAC
+BBCA
+BCAB
+BCBA
+CABB
+CBAB
+CBBA
+*/
