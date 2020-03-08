@@ -11,11 +11,17 @@ const int BT_BUF_SIZE = 100;
 int n = 4, W = 5;
 int w[MAX_N] = {2,1,3,2};
 int v[MAX_N] = {3,2,4,2};
+int MemoArray[5][6];// n+1, W+1
 
 //-- see stack by bt command in gdb
 //-- i th item
 int rec(int i, int remaining_weight_capacity) {
-
+  if (MemoArray[i][remaining_weight_capacity] != 0) {
+    printf("%d th item; remaining capacity: %d was memoized.\n",
+	   i, remaining_weight_capacity);
+    return MemoArray[i][remaining_weight_capacity];
+  }
+  //--- this region for monitoring stack state (execinfo)
   void *buffer[BT_BUF_SIZE];
   int nptrs = backtrace(buffer, BT_BUF_SIZE);
   printf("%d th item picked; remaining capacity: %d, bt: %d\n",
@@ -28,13 +34,16 @@ int rec(int i, int remaining_weight_capacity) {
     // if the weight of ith item is over capacity, pick the next
     return rec(i + 1, remaining_weight_capacity);
   }
-  return
+  const int to_return =
     std::max(
-	     // weight of ith item is over capacity
+	     // this is for skipping ith item
 	     rec(i + 1, remaining_weight_capacity),
 	     // take ith item in
+	     // (remaining weight reduced, value added)
 	     rec(i + 1, remaining_weight_capacity - w[i]) + v[i]
 	     );
+  MemoArray[i][remaining_weight_capacity] = to_return;
+  return to_return;
 }
 
 void solve() {
@@ -76,7 +85,7 @@ void Search(const int index,
 }
 
 int main() {
-  //solve();
-  Search (-1, 0, 0, n);
+  solve();
+  //Search (-1, 0, 0, n);
   return 0;
 }
