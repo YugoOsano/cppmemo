@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <stdio.h>
 #include <execinfo.h>
+#include <cstring> // memset
 
 //-- ref about execinfo:
 //  http://man7.org/linux/man-pages/man3/backtrace.3.html
@@ -8,15 +9,15 @@
 const int MAX_N = 10000;
 const int BT_BUF_SIZE = 100;
 
-int n = 4, W = 5;
+const int n = 4, W = 5;
 int w[MAX_N] = {2,1,3,2};
 int v[MAX_N] = {3,2,4,2};
-int MemoArray[5][6];// n+1, W+1
+int MemoArray[n+1][W+1];// n+1, W+1
 
 //-- see stack by bt command in gdb
 //-- i th item
 int rec(int i, int remaining_weight_capacity) {
-  if (MemoArray[i][remaining_weight_capacity] != 0) {
+  if (MemoArray[i][remaining_weight_capacity] >= 0) {
     printf("%d th item; remaining capacity: %d was memoized.\n",
 	   i, remaining_weight_capacity);
     return MemoArray[i][remaining_weight_capacity];
@@ -47,6 +48,8 @@ int rec(int i, int remaining_weight_capacity) {
 }
 
 void solve() {
+  printf("size of MemoArray: %ld\n", sizeof(MemoArray));
+  std::memset(MemoArray, -1, sizeof(MemoArray));
   printf("%d\n", rec(0, W));
 }
 
