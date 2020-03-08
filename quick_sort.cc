@@ -1,6 +1,7 @@
 #include <list>
 #include <iostream>
 #include <algorithm>
+#include <vector>
 
 template <typename T>
 void QuickSort(const std::list<T>& list) {
@@ -87,6 +88,43 @@ SortedList<T> QuickSortWrappedClass(
   return std::move(sorted_list_update1);
 }
 
+//-- version of using itertator to prevent new vector construction
+//   (reference stlprac.cc)
+template <typename T>
+void QuickSortIter(typename std::vector<T>::iterator iter_begin,
+		   typename std::vector<T>::iterator iter_end) {
+  const size_t distance = std::distance(iter_begin,
+					iter_end);
+  if (distance == 0) return;
+  if (distance == 1) {
+    std::cout << *iter_begin << std::endl;
+    return;
+  }
+  const std::pair<typename std::vector<T>::iterator,
+		  typename std::vector<T>::iterator>& minmax
+    = std::minmax_element(iter_begin,
+			  iter_end);
+  const int middle = (*minmax.first + *minmax.second) / 2;
+
+  typename std::vector<T> buffer(distance);
+  typename std::vector<T>::iterator         buffer_front = buffer.begin();
+  typename std::vector<T>::reverse_iterator buffer_back  = buffer.rbegin();
+  for (auto iter = iter_begin; iter != iter_end; iter++) {
+    if (*iter > middle) {
+      *buffer_front = *iter; buffer_front++;
+    }
+    else {
+      *buffer_back = *iter; buffer_back++;
+    }
+  }
+  std::copy(buffer.begin(), buffer.end(),
+	    iter_begin);
+  const size_t upper_size = std::distance(buffer.begin(),
+					  buffer_front);
+  QuickSortIter<T>(iter_begin, iter_begin + upper_size);
+  QuickSortIter<T>(iter_begin + upper_size, iter_end);
+}
+
 int main () {
   const std::list<int> list{-100, -300, 987, -567, 100, 256, -1298, 675};
   std::list<int> sorted_list;
@@ -102,6 +140,10 @@ int main () {
   for (const int element : sorted_list_wrapped.list_)
     std::cout << element << std::endl;
 
+  std::vector<int> vector(list.begin(), list.end());
+  std::cout << "--- QuickSortIter ---" << std::endl;
+  QuickSortIter<int>(vector.begin(),
+		     vector.end());
   return 0;
 }
 
