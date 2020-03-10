@@ -41,6 +41,15 @@ void print_structure(int heap[], int start_index)
         }
     }
 }
+//https://stackoverflow.com/questions/53161/find-the-highest-order-bit-in-c
+int FindHighestOrderOfBit(int num) {
+  if (!num) return 0;
+
+  int ret = 1;
+  while (num >>= 1)
+    ret <<= 1;
+  return ret;
+}
 
 int main () {
   int myints[] = {10,20,30,5,15};
