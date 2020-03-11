@@ -4,6 +4,7 @@
 #include <iostream>     // std::cout
 #include <algorithm>    // std::make_heap, std::pop_heap, std::push_heap, std::sort_heap
 #include <vector>       // std::vector
+#include <cstdlib>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -65,6 +66,26 @@ void PrintHeapAsTree(const std::vector<int>& heap) {
   }
   std::cout << std::endl;
 }
+//-- vector based handmade heap --
+void InsertToHeap(std::vector<int>& heap,
+		  const int         value,
+		  const size_t      index) {
+  //-- size check
+  if (index >= heap.size()) {
+    std::cerr << "index is out of range." << std::endl;
+    std::exit(1);
+  }
+  heap.at(index) = value;
+  if (index == 0 || index == 1) return;
+  const size_t upper_index = index / 2;
+  // > for descending, < for ascending from the top
+  if (heap.at(upper_index) > value) return;
+
+  heap.at(index) = heap.at(upper_index);
+  InsertToHeap(heap,
+	       value,
+	       upper_index);
+}
 
 int main () {
   int myints[] = {10,20,30,5,15};
@@ -125,9 +146,20 @@ int main () {
   print_structure(heap, 1);
 
   //---- made from scratch ----
-  std::cout << "--- hand made heap ---" << std::endl;
-  std::vector<int> intvec10(myints10, myints10+10);
-  PrintHeapAsTree(intvec10);
-  
+  {
+    std::cout << "--- hand made heap ---" << std::endl;
+    std::vector<int> intvec10(myints10, myints10+10);
+    PrintHeapAsTree(intvec10);
+
+    const size_t size = intvec10.size();
+    std::vector<int> heap(size, 0);
+    for (size_t i=0; i<size; i++) {
+      InsertToHeap(heap,
+		   intvec10.at(i),
+		   i);
+      std::cout << "-----" << std::endl;
+      PrintHeapAsTree(heap);
+    }
+  }
   return 0;
 }
