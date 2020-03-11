@@ -5,6 +5,7 @@
 #include <algorithm>    // std::make_heap, std::pop_heap, std::push_heap, std::sort_heap
 #include <vector>       // std::vector
 #include <cstdlib>
+#include <numeric>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -86,6 +87,39 @@ void InsertToHeap(std::vector<int>& heap,
 	       value,
 	       upper_index);
 }
+//-- compare lower two nodes -> retrieval
+void CompareAndRetrieve(std::vector<int>& heap,
+			const size_t      index) {
+  const int MinInt = std::numeric_limits<int>::min();
+  const size_t lower_left  = index * 2;
+  const size_t lower_right = index * 2 + 1;
+  //-- lambda for size check
+  auto IsSizeOverOrNull =
+    [&heap,MinInt](const size_t lower)->bool {
+      if (lower >= heap.size())     return true;
+      if (heap.at(lower) == MinInt) return true;
+      return false;
+    };
+  // both are false -> rewrite to MinInt
+  if (IsSizeOverOrNull(lower_left) &&
+      IsSizeOverOrNull(lower_right)) {
+    heap.at(index) = MinInt;
+    return;
+    // left is dead or right is larger -> go right
+  } else if (IsSizeOverOrNull(lower_left) ||
+	     heap.at(lower_left) < heap.at(lower_right)) {
+    heap.at(index) = heap.at(lower_right);
+    CompareAndRetrieve(heap, lower_right);
+  } else if (IsSizeOverOrNull(lower_right) ||
+	     heap.at(lower_left) >= heap.at(lower_right)) {
+    heap.at(index) = heap.at(lower_left);
+    CompareAndRetrieve(heap, lower_left);
+  }
+  else {
+    std::cerr << "wrong conditioning." << std::endl;
+    std::exit(1);
+  }
+}
 
 int main () {
   int myints[] = {10,20,30,5,15};
@@ -160,6 +194,16 @@ int main () {
       std::cout << "-----" << std::endl;
       PrintHeapAsTree(heap);
     }
+    std::vector<int> sorted;
+    while (heap.at(1) != std::numeric_limits<int>::min()) {
+      sorted.push_back(heap.at(1));
+      CompareAndRetrieve(heap, 1);
+      std::cout << "-----" << std::endl;
+      PrintHeapAsTree(heap);
+    }
+    for (const int elem : sorted)
+      std::cout << elem << " ";
+    std::cout << std::endl;
   }
   return 0;
 }
