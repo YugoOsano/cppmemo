@@ -50,6 +50,21 @@ int FindHighestOrderOfBit(int num) {
     ret <<= 1;
   return ret;
 }
+void PrintHeapAsTree(const std::vector<int>& heap) {
+  // skip 0th element
+  std::vector<int>::const_iterator iter = heap.cbegin()+1;
+  size_t distance_for_return = 2;
+  while (iter != heap.cend()) {
+    std::cout << *iter << " ";
+    iter++;
+    if (std::distance(heap.cbegin(), iter) ==
+	distance_for_return) {
+      std::cout << std::endl;
+      distance_for_return <<= 1;//return at 2^n
+    }
+  }
+  std::cout << std::endl;
+}
 
 int main () {
   int myints[] = {10,20,30,5,15};
@@ -108,6 +123,11 @@ int main () {
   }
   printf("\n");
   print_structure(heap, 1);
+
+  //---- made from scratch ----
+  std::cout << "--- hand made heap ---" << std::endl;
+  std::vector<int> intvec10(myints10, myints10+10);
+  PrintHeapAsTree(intvec10);
   
   return 0;
 }
