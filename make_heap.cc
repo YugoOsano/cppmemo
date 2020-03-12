@@ -120,6 +120,39 @@ void CompareAndRetrieve(std::vector<int>& heap,
     std::exit(1);
   }
 }
+void CompareAndRetrieveWithResize(std::vector<int>& heap,
+				  const size_t      index) {
+  const size_t lower_left  = index * 2;
+  const size_t lower_right = index * 2 + 1;
+  const size_t size        = heap.size();
+  // both are false -> pop back if the last element
+  //                -> otherwise retrieve the last element and insert
+  if (lower_left  >= size &&
+      lower_right >= size) {
+    if (index == size - 1) {
+      heap.pop_back();
+      return;
+    }
+    const int last_value = *heap.rbegin();
+    InsertToHeap(heap, last_value, index);
+    heap.pop_back();
+    return;
+  } else if (lower_right >= size) {
+    heap.at(index) = heap.at(lower_left);
+    CompareAndRetrieveWithResize(heap, lower_left);
+  } else if (heap.at(lower_left) >= heap.at(lower_right)) {
+    heap.at(index) = heap.at(lower_left);
+    CompareAndRetrieveWithResize(heap, lower_left);
+    // right is larger -> go right
+  } else if (heap.at(lower_left) < heap.at(lower_right)) {
+    heap.at(index) = heap.at(lower_right);
+    CompareAndRetrieveWithResize(heap, lower_right);
+  }
+  else {
+    std::cerr << "wrong conditioning." << std::endl;
+    std::exit(1);
+  }
+}
 
 int main () {
   int myints[] = {10,20,30,5,15};
@@ -197,6 +230,7 @@ int main () {
     std::vector<int> sorted;
     while (heap.at(1) != std::numeric_limits<int>::min()) {
       sorted.push_back(heap.at(1));
+      //CompareAndRetrieveWithResize(heap, 1);
       CompareAndRetrieve(heap, 1);
       std::cout << "-----" << std::endl;
       PrintHeapAsTree(heap);
