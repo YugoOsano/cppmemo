@@ -135,17 +135,19 @@ void CompareAndRetrieveWithResize(std::vector<int>& heap,
     }
     heap.pop_back();
     return;
-  } else if (lower_right >= size) {
-    heap.at(index) = heap.at(lower_left);
-    CompareAndRetrieveWithResize(heap, lower_left);
-  } else if (heap.at(lower_left) >= heap.at(lower_right)) {
-    heap.at(index) = heap.at(lower_left);
-    CompareAndRetrieveWithResize(heap, lower_left);
-    // right is larger -> go right
-  } else if (heap.at(lower_left) < heap.at(lower_right)) {
-    heap.at(index) = heap.at(lower_right);
-    CompareAndRetrieveWithResize(heap, lower_right);
   }
+  //-- select left or right
+  const size_t lower =
+    [&heap](const size_t left,
+	    const size_t right,
+	    const size_t size)->size_t {
+      if      (right >= size)                   return left;
+      else if (heap.at(left) >= heap.at(right)) return left;
+      return right;
+    }(lower_left, lower_right, size);
+
+  heap.at(index) = heap.at(lower);
+  CompareAndRetrieveWithResize(heap, lower);
 }
 
 int main () {
