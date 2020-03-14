@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <utility>
 #include <atomic>
+#include <memory>
 
 struct X{
   X() : member_(100){}
@@ -61,6 +62,15 @@ X ReturnX() {
   // https://stackoverflow.com/questions/52104649/c11-rvalue-reference-vs-const-reference
   //return std::move(xinstance);
   return static_cast<X&&>(xinstance);
+}
+
+// Discussion on ownership in C++ and Rust
+//https://softwareengineering.stackexchange.com/questions/318078/possible-to-achieve-rusts-ownership-model-with-a-generic-c-wrapper
+//-- factory function to pass a unique pointer with instantiation
+std::unique_ptr<X> CreateX() {
+  std::unique_ptr<X> ptr
+    = std::make_unique<X>();
+  return std::move(ptr);
 }
 
 int main ()
