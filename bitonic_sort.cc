@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <utility>
+#include <iostream>
 
 void BitonicCompareAndSwap(
 		    const bool           is_up,
@@ -50,15 +51,19 @@ std::vector<double> BitonicSort(const bool           is_up,
 				  array.end());
   std::vector<double> latter_half_recurred
     = BitonicSort(false /* is_up */, latter_half);
-  initial_half_recurred.insert(initial_half_recurred.end(),
-			       latter_half_recurred.begin(),
-			       latter_half_recurred.end());  
-  return BitonicMerge(is_up, initial_half_recurred);
+  initial_half_recurred.insert(
+	  initial_half_recurred.end(),
+	  std::make_move_iterator(latter_half_recurred.begin()),
+	  std::make_move_iterator(latter_half_recurred.end()));
+  return std::move(BitonicMerge(is_up, initial_half_recurred));
 }
 
 int main () {
   std::vector<double> list{10, 30, 11, 20, 4, 330, 21, 110};
   std::vector<double> sorted = BitonicSort(true, list);
 
+  for (const double value : sorted)
+    std::cout << value << " ";
+  std::cout << std::endl;
   return 0;
 }
