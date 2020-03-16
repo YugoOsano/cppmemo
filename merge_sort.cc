@@ -33,7 +33,8 @@ void MergeSort(std::vector<int>::iterator iter_begin,
     else
       PushAndForward((*iter1 > *iter2) ? iter1 : iter2);
   }
-  std::copy(buffer.begin(), buffer.end(),
+  std::copy(std::make_move_iterator(buffer.begin()),
+	    std::make_move_iterator(buffer.end()),
 	    iter_begin);
 }
 int main () {

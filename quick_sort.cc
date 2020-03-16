@@ -117,7 +117,8 @@ void QuickSortIter(typename std::vector<T>::iterator iter_begin,
       *buffer_back = *iter; buffer_back++;
     }
   }
-  std::copy(buffer.begin(), buffer.end(),
+  std::copy(std::make_move_iterator(buffer.begin()),
+	    std::make_move_iterator(buffer.end()),
 	    iter_begin);
   const size_t upper_size = std::distance(buffer.begin(),
 					  buffer_front);
