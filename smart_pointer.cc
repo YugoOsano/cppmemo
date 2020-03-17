@@ -7,14 +7,22 @@
 #include <memory>
 #include <iostream>
 #include <utility>
+#include <vector>
 
 class Base{
 public:
-  Base() = default;
-  Base(Base&& b) {
+  Base() : value_(123.456){}
+  Base(Base&& b) : Base() {
     std::cout << "move constructor of Base." << std::endl;
   }
   virtual ~Base(){}
+
+  void SetValue(const double value) {
+    value_ = value;
+  }
+  double GetValue() const {return value_;}
+protected:
+  double value_;
 };
 
 class Derived : public Base {
@@ -40,8 +48,17 @@ int main()
   std::unique_ptr<Base> ptr_2
     = std::move(ptr_base);
 
+  ptr_2->SetValue(98.76);
   //  std::unique_ptr<Derived> ptr_derived
   //  = std::move(ptr_2);
-  
+
+  std::unique_ptr<const Base> ptr_const
+    = std::make_unique<const Base>();
+
+  //ptr_const->SetValue(321.098);//-- compile error
+  std::vector<decltype(ptr_const)> vec;
+  vec.push_back(std::move(ptr_const));
+
+  std::cout << vec.at(0)->GetValue() << std::endl;
   return 0;
 }
