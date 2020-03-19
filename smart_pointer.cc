@@ -8,6 +8,7 @@
 #include <iostream>
 #include <utility>
 #include <vector>
+#include <map>
 
 class Base{
 public:
@@ -52,13 +53,30 @@ int main()
   //  std::unique_ptr<Derived> ptr_derived
   //  = std::move(ptr_2);
 
-  std::unique_ptr<const Base> ptr_const
-    = std::make_unique<const Base>();
+  //-- take reference
+  std::unique_ptr<Base>& ref_ptr =  ptr_2;
+  Base& ref_base = *ptr_2;
+  {
+    std::unique_ptr<const Base> ptr_const
+      = std::make_unique<const Base>();
 
-  //ptr_const->SetValue(321.098);//-- compile error
-  std::vector<decltype(ptr_const)> vec;
-  vec.push_back(std::move(ptr_const));
+    //ptr_const->SetValue(321.098);//-- compile error
+    std::vector<decltype(ptr_const)> vec;
+    vec.push_back(std::move(ptr_const));
 
-  std::cout << vec.at(0)->GetValue() << std::endl;
+    std::cout << vec.at(0)->GetValue() << std::endl;
+
+    //-- take reference in a range-based for
+    for(const std::unique_ptr<const Base>& ptr : vec) {
+    }
+  }
+  {
+    std::unique_ptr<const Base> ptr_const
+      = std::make_unique<const Base>();
+    std::map<size_t, std::unique_ptr<const Base>> map;
+    map.emplace(std::make_pair(0, std::move(ptr_const)));
+    for (const auto& pair : map) {
+    }
+  }
   return 0;
 }
