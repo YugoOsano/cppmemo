@@ -10,6 +10,10 @@
 void output(const int a) {
   std::cout << a << std::endl;
 }
+struct Data{
+  Data(const int v) : value_(v) {}
+  int value_;
+};
 int main () {
   std::vector<int> alist{2,3,4};
   // second argument is an unary function
@@ -32,6 +36,21 @@ int main () {
     for (const int key : keys)
       std::cout << key << " ";
     std::cout << std::endl;
+  }
+  // boost range transform
+  // https://greek0.net/boost-range/boost-range-transform.html
+  // convert map<key, Data> to map<key, value (of Data)>
+  {
+    const std::map<int, Data> mapData{
+      {0,Data(5)},{2,Data(10)},{4,Data(5)}};
+    std::map<int,int> converted;
+    boost::transform(mapData,
+		     std::inserter(converted, converted.begin()),
+		     [](const std::pair<int, Data>& pair) {
+		       return std::make_pair(pair.first,
+					     pair.second.value_);});
+    for (const auto& pair : converted)
+      std::cout << pair.first << " " << pair.second << std::endl;
   }
   return 0;
 }
