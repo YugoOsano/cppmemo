@@ -17,7 +17,6 @@ public:
     std::cout << "move constructor of Base." << std::endl;
   }
   virtual ~Base(){}
-
   void SetValue(const double value) {
     value_ = value;
   }
