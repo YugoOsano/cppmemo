@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <boost/range/algorithm.hpp>
+#include <boost/range/adaptors.hpp>
 
 #include <map>
 #include <set>
@@ -36,6 +37,21 @@ int main () {
     for (const int key : keys)
       std::cout << key << " ";
     std::cout << std::endl;
+  }
+  //-- filter map elements by keys stored in a set
+  //https://theboostcpplibraries.com/boost.range-adaptors
+  {
+    const std::map<int, int> mapint{{0,1},{2,3},{4,5}};
+    const std::set<int>      keys{2,4};
+    std::map<int,int> filtered;
+    boost::copy(boost::adaptors::filter(
+	          mapint,
+		  [&keys](const std::pair<int,int>& pair){
+		    return (keys.find(pair.first) != keys.cend()); }),
+		std::inserter(filtered, filtered.begin()));
+    for (const auto& pair : filtered)
+      std::cout << pair.first << " " << pair.second << std::endl;
+    std::cout << "-- filtered end --" << std::endl;
   }
   // boost range transform
   // https://greek0.net/boost-range/boost-range-transform.html
