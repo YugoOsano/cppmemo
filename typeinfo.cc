@@ -1,6 +1,8 @@
 #include <iostream>
 #include <typeinfo>
 #include <tuple>
+#include <vector>
+#include <map>
 
 class Aclass{
 };
@@ -47,7 +49,13 @@ int main(){
 
   auto tname = typeid(TupleBoolInt).name();
   std::cout << "name dump: " << typeid(tname).name() << std::endl;
-  
-  
+
+  //----STL's value_type
+  {
+    std::vector<int>::value_type x;
+    std::map<int, Aclass>::value_type map_value;
+    std::cout << "map_value type: " << typeid(map_value).name()
+	    << std::endl;
+  }
   return 0;
 }
