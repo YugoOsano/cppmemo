@@ -1,5 +1,6 @@
 #include <iostream>
 #include <typeinfo>
+#include <type_traits>
 #include <tuple>
 #include <vector>
 #include <map>
@@ -53,7 +54,13 @@ int main(){
   //----STL's value_type
   {
     std::vector<int>::value_type x;
+    static_assert(std::is_same<decltype(x), int>::value,
+		  "x is int"); // message is shown on error
+
     std::map<int, Aclass>::value_type map_value;
+    static_assert(std::is_same<decltype(map_value),
+		  std::pair<int const, Aclass>>::value,
+		  "map_value is std::pair<int, Aclass>");
     std::cout << "map_value type: " << typeid(map_value).name()
 	    << std::endl;
   }
