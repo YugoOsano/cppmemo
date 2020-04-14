@@ -37,16 +37,28 @@ public:
 };
 
 template <typename T>
-class ObservableVector final {
+class Vector {
 public:
-  void PushBack(T&& value) {
+  virtual void PushBack(T&& value) {
     data_.push_back(value);
+  }
+protected:
+  std::vector<T> data_;
+};
 
+template <typename T>
+class ObservableVector final : public Vector<T> {
+public:
+  void PushBack(T&& value) override {
+    this->data_.push_back(value);
+    //Vector<T>::PushBack(value);
+   // need of this:
+   // https://www.cplusplus.com/forum/beginner/24996/
     for (auto observer : observers_) {
       if (observer != nullptr) {
 	observer->CollectionChanged({
 	    ActionList::add,
-	      std::vector<size_t>{data_.size() - 1}
+	      std::vector<size_t>{this->data_.size() - 1}
 	  });
       }
     }
@@ -55,7 +67,7 @@ public:
     observers_.push_back(observer);
   }
 private:
-  std::vector<T>                   data_;
+  //  std::vector<T>                   data_;
   std::vector<CollectionObserver*> observers_;
 };
 
