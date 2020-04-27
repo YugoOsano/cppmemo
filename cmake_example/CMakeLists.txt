@@ -9,7 +9,7 @@ project(hello_cmake CXX)
 # export CXX=clang++
 
 # exe file and source files
-add_executable(main_app main.cpp)
+add_executable(main_app main.cpp func.hpp func.cpp)
 
 # to prevent intermediate files mixing,
 # create build directory to work therein.
