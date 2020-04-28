@@ -8,3 +8,7 @@ a.out
 *.o
 *.ali
 *.so
+*.zip
+bitmap/*
+cmake_example/build/*
+
