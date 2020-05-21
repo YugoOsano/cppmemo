@@ -115,8 +115,12 @@ int main(int argc, char *argv[])
   //-- vector -> set --
   std::set<double> s(x.begin(), x.end());
   std::multiset<double> smulti(x.begin(), x.end());
-  printSet(s);
+  printSet(s);// 0, 1.5
   printSet(smulti);
+  const size_t n_erased1 = s.erase(7.0);
+  std::cout << "s.erase(7.0) returns: " << n_erased1 << std::endl;//0
+  const size_t n_erased2 = s.erase(1.5);
+  std::cout << "s.erase(1.5) returns: " << n_erased2 << std::endl;//1
 
   //-- 2d vector --
   // http://stackoverflow.com/questions/2665936/is-there-a-way-to-specify-the-dimensions-of-a-nested-stl-vector-c
