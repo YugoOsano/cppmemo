@@ -1,5 +1,7 @@
 #include <atomic>
 #include <iostream>
+#include <map>
+#include <memory>
 
 int main () {
   
@@ -25,6 +27,13 @@ int main () {
   std::cout << "ptr: " << ptr << "\t&b: " << &b << std::endl;
   std::cout << "*ptr: " << *ptr << std::endl;
   std::cout << "atm: " << atm.load() << std::endl;  
+
+  //-- stackoverflow 35091396; atomic as map value
+  //using atomic_ptr_t = std::shared_ptr<std::atomic<int64_t>>;// original in stf
+  using atomic_ptr_t = std::unique_ptr<std::atomic<int64_t>>;// unique_ptr version
+  typedef std::map<uint64_t, atomic_ptr_t> value_map_t;
+  value_map_t map;
+  map[1] = atomic_ptr_t(new std::atomic<int64_t>(0));
   
   return 0;
 }
