@@ -82,5 +82,18 @@ int main()
 	      << iter->second.a << ", "
 	      << iter->second.b << std::endl;
   }
+  {
+    //-- vector of map iterator
+    std::map<int, int> mapint {{1,2},{3,4},{5,6},{7,8}};
+    std::vector<decltype(mapint)::const_iterator> vec_iter;
+    vec_iter.emplace_back(mapint.find(1));
+    vec_iter.emplace_back(mapint.find(5));
+
+    //-- perhaps this loop is faster than loop about map.at(1)/(5)
+    for (const auto iter : vec_iter) {
+      std::cout << "vec_iter pair: "
+		<< iter->first << ", " << iter->second << std::endl;
+    }
+  }
   return 0;
 }
