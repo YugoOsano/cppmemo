@@ -5,7 +5,11 @@ git commit -m "first commit"
 git remote add origin git@github.com:YugoOsano/cppmemo.git
 git push -u origin master
 
-#  http://blog.glasses-factory.net/2011/08/16/github
+#  at home directory, generate a ssh key by:
+ssh-keygen -o
+# https://git-scm.com/book/en/v2/Git-on-the-Server-Generating-Your-SSH-Public-Key
+# to add the key (content of .ssh/id_rsa.pub) to:
+# https://github.com/settings/keys
 
 # after cloning another repsitory from my own account,
 # create .git/config to copy what follows:
