@@ -8,7 +8,7 @@ git push -u origin master
 #  http://blog.glasses-factory.net/2011/08/16/github
 
 # after cloning another repsitory from my own account,
-# create ./git/config to copy what follows:
+# create .git/config to copy what follows:
 
 [core]
 	repositoryformatversion = 0
