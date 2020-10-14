@@ -4,6 +4,7 @@
 #include <map>
 #include <random>
 #include <algorithm>
+#include <string>
 
 //-- prepare a class to use as a member of SampleClass --
 // default constructor and copy constructor are needed to
@@ -190,6 +191,15 @@ int main(int argc, char *argv[])
 
     std::copy(std::begin(a), std::end(a), std::begin(input));
     std::copy(std::begin(b), std::end(b), std::begin(input) + a.size());
+  }
+  //--- practice string manipulation
+  {
+    //https://cpprefjp.github.io/reference/algorithm/remove.html
+    std::string yymmdd("2040-01-01");
+    std::string::iterator removed = std::remove(yymmdd.begin(), yymmdd.end(), '-');
+
+    yymmdd.erase(removed, yymmdd.end());
+    std::cout << "yymmdd: " << yymmdd << std::endl;
   }
   return 0;
 }
