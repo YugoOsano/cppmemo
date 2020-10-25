@@ -8,6 +8,12 @@
 #include <omp.h>
 #include <vector>
 #include <thread>
+#include <map>
+
+struct MapValue {
+  MapValue(const int x) : x_(x){}
+  int x_;
+};
 
 int main()
 {
@@ -57,18 +63,40 @@ int main()
   #pragma omp parallel
   {
     int num_threads =  omp_get_num_threads();
+    printf("num_threads: %d\n", num_threads);
 
     for (int i_all = 0; i_all < 8; i_all) {
-    
       #pragma omp parallel for
-      for (int i = 0; i < num_threads; i++) { 
+      for (int i = 0; i < num_threads; i++) {
 	i_all++;
-  
 	printf("barrier test: thread: %d\n", omp_get_thread_num());
       }
       #pragma omp barrier
       printf("after barrier: thread: %d\n", omp_get_thread_num());
     }
-  }  
+  }
+  //--- parallelize loop over iterator ---
+  {
+    const std::map<size_t, MapValue> map_to_loop {
+      {1, MapValue(5)},
+      {10, MapValue(50)},
+      {100, MapValue(500)},
+      {1000, MapValue(5000)},
+      {10000, MapValue(50000)},
+      {100000, MapValue(500000)}};
+    std::vector<decltype(map_to_loop)::const_iterator>
+      iter_list;
+    for (auto iter = map_to_loop.cbegin();
+	 iter     != map_to_loop.cend(); iter++)
+      iter_list.emplace_back(iter);
+    const size_t listsize = iter_list.size();
+
+#pragma omp parallel for
+    for (size_t i = 0; i < listsize; i++) {
+      printf("map value: %d, thread: %d\n",
+	     iter_list[i]->second.x_,
+	     omp_get_thread_num());
+    }
+  }
   return 0;
 }
