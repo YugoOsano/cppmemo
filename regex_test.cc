@@ -7,6 +7,9 @@
 int main()
 {
   {
+    // R"(...)" represents raw string literal,
+    // where escape sequence is ignored within ().
+    //see https://cpprefjp.github.io/lang/cpp11/raw_string_literals.html
     std::string str = "1421, 34353, 7685, 12765, 976754";
     std::regex pattern{R"(\d+)"};
     std::smatch match{};
@@ -36,3 +39,6 @@ int main()
   }
   return 0;
 }
+// list of characters which need escape (by \)
+// \ * + . ? {} () [] ^ $ - | /
+// see https://qiita.com/katsukii/items/1c1550f064b4686c04d4
