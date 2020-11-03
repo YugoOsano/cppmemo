@@ -31,6 +31,14 @@ public:
     std::cout << "move constructor of Derived." << std::endl;
   }
 };
+//-- capture a referenced object as a pointer member
+class Capturing {
+public:
+  Capturing(const Base& base) :
+    ptr_base_(&base) {}
+protected:
+  const std::unique_ptr<const Base> ptr_base_;
+};
 
 int main()
 {
@@ -55,6 +63,7 @@ int main()
   //-- take reference
   std::unique_ptr<Base>& ref_ptr =  ptr_2;
   Base& ref_base = *ptr_2;
+  Capturing capturing(ref_base);
   {
     std::unique_ptr<const Base> ptr_const
       = std::make_unique<const Base>();
