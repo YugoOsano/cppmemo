@@ -2,6 +2,7 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <unordered_map>
 #include <random>
 #include <algorithm>
 #include <string>
@@ -200,6 +201,31 @@ int main(int argc, char *argv[])
 
     yymmdd.erase(removed, yymmdd.end());
     std::cout << "yymmdd: " << yymmdd << std::endl;
+  }
+  //-- unordered_map::bucket
+  {
+    const std::unordered_map<std::string, int> um = {
+    {"1st", 1},
+    {"2nd", 2},
+    {"3rd", 3},
+    {"3rd2", 33},
+    {"4th", 4},
+    {"4th2", 44},
+    {"5th", 5}
+    };
+    const size_t bucketcount = um.bucket_count();
+    std::cout << "bucket count is " << bucketcount << std::endl;
+    std::cout << "(bucket No, size)" << std::endl;
+#pragma omp parallel for
+    for (size_t i=0; i<bucketcount;i++) {
+      std::cout << "(" << i << "," << um.bucket_size(i) << "): elements are: ";
+      for (decltype(um)::const_local_iterator liter = um.cbegin(i);
+	   liter                                   != um.cend(i); liter++)
+	std::cout << "[" << liter->first
+		  << "," << liter->second << "]";
+      std::cout << std::endl;
+    }
+    std::cout << std::endl;
   }
   return 0;
 }
