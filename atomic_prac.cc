@@ -3,6 +3,25 @@
 #include <map>
 #include <memory>
 
+//-- made a wrapper class
+class Original{
+public:
+  Original() : value_(123) {}
+  Original(const Original& original)=default;
+  Original& operator=(const Original& original)=default;
+
+  //-- an object which has a virtual function can't be held by atomic:
+  //   see stackoverflow 58852618
+  //virtual ~Original()=default;
+protected:
+  int value_;
+};
+class AtomicOriginal {
+  virtual ~AtomicOriginal()=default;
+protected:
+  std::atomic<Original> original_;
+};
+
 int main () {
   
   std::atomic<int> atm(1234);
