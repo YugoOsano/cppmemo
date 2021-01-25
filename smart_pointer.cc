@@ -16,7 +16,7 @@ public:
   Base(Base&& b) : Base() {
     std::cout << "move constructor of Base." << std::endl;
   }
-  virtual ~Base(){}
+  virtual ~Base()=default;
   void SetValue(const double value) {
     value_ = value;
   }
@@ -27,6 +27,7 @@ protected:
 
 class Derived : public Base {
 public:
+  virtual ~Derived()=default;
   Derived(Base&& b) : Base(std::move(b)) {
     std::cout << "move constructor of Derived." << std::endl;
   }
@@ -52,9 +53,7 @@ int main()
   //--- move to unique pointer of derived
   std::unique_ptr<Base> ptr_base
     (std::make_unique<Base>());
-
-  std::unique_ptr<Base> ptr_2
-    = std::move(ptr_base);
+  std::unique_ptr<Base> ptr_2(std::move(ptr_base));
 
   ptr_2->SetValue(98.76);
   //  std::unique_ptr<Derived> ptr_derived
@@ -63,7 +62,7 @@ int main()
   //-- take reference
   std::unique_ptr<Base>& ref_ptr =  ptr_2;
   Base& ref_base = *ptr_2;
-  Capturing capturing(ref_base);
+  // Capturing capturing(ref_base);//<- This caused Segmentation fault
   {
     std::unique_ptr<const Base> ptr_const
       = std::make_unique<const Base>();
@@ -85,6 +84,12 @@ int main()
     map.emplace(std::make_pair(0, std::move(ptr_const)));
     for (const auto& pair : map) {
     }
+    //-- move an element to another map
+    //   see StackOverFlow 17032745
+    std::map<size_t, std::unique_ptr<const Base>> map_to_recieve;
+    auto iter = map.find(0);
+    map_to_recieve.emplace(iter->first, std::move(iter->second));
+    map.erase(iter);
   }
   return 0;
 }
