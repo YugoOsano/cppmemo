@@ -90,6 +90,12 @@ int main()
     auto iter = map.find(0);
     map_to_recieve.emplace(iter->first, std::move(iter->second));
     map.erase(iter);
+
+    std::map<size_t, std::unique_ptr<const Base>> to_merge;
+    to_merge.emplace(123, std::make_unique<const Base>());
+    map_to_recieve.insert(std::make_move_iterator(to_merge.begin()),
+			  std::make_move_iterator(to_merge.end()));
+    std::cout << "size of map_to_recieve: " << map_to_recieve.size() << "\n";
   }
   return 0;
 }
