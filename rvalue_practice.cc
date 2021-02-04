@@ -8,7 +8,11 @@
 
 struct X{
   X() : member_(100){}
-
+  int member_;
+};
+struct Y{
+  Y() : member_(100){}
+  Y(const Y&)=delete;
   int member_;
 };
 
@@ -72,7 +76,17 @@ std::unique_ptr<X> CreateX() {
     = std::make_unique<X>();
   return std::move(ptr);
 }
-
+// function to avoid returning values by an argument
+Y&& UpdateMember(Y&& y) {
+  y.member_ += 1;
+  return std::move(y);
+}
+void MainForY() {
+  std::unique_ptr<Y> ptry(std::make_unique<Y>());
+  Y&& refy1(UpdateMember(std::move(*ptry)));
+  Y&& refy2(UpdateMember(std::move(refy1)));
+  std::cout << "Y::member is " << refy2.member_ << std::endl;
+}
 int main ()
 {
   const X&& rref_x = ReturnX();
@@ -125,8 +139,8 @@ int main ()
   
   // -- atomic --
   std::atomic<int> ai0{ 0 } ;
-
   ai0 = 1;
 
+  MainForY();
   return 0;
 }
