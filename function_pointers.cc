@@ -3,6 +3,9 @@
 #include <iostream>
 #include <functional>
 #include <typeinfo>
+#include <map>
+#include <string>
+#include <set>
 
 class Foo {
 private:
@@ -25,6 +28,15 @@ void RepeatFunc(FunctionType func,
     func(instance ...);
 } 
 
+//-- act on iterators and predicate like algorithm library
+template<typename Iter, typename Pred>
+void ApplyAlgorithm(Iter iter_begin,
+		    Iter iter_end,
+		    Pred& pred) {
+  for (auto iter = iter_begin;
+       iter     != iter_end; iter++)
+    pred(*iter);
+}
 int main(int argc, char const* argv[])
 {
   Foo     f;
@@ -49,6 +61,35 @@ int main(int argc, char const* argv[])
   std::cout << data(f) << std::endl;
   std::cout << typeid(hello).name() << std::endl;
   std::cout << typeid(bind_hello).name() << std::endl;
-  
+  {
+    std::map<size_t, std::string> id_string{{2, "lkjh"}};
+    //-- functor to apply
+    struct Printer {
+      void operator()(const std::pair<size_t, std::string>& pair) {
+	std::cout << pair.first << ", " << pair.second << "\n";
+      }
+    };
+    Printer printer;
+    ApplyAlgorithm(id_string.cbegin(),
+		   id_string.cend(),
+		   printer
+		   // [](const std::pair<size_t, std::string>& pair) {
+		   //   std::cout << pair.first << ", " << pair.second << "\n";
+		   // }
+		   );
+    struct Collector {
+      void operator()(const std::pair<size_t, std::string>& pair) {
+	idset_.emplace(pair.first);
+      }
+      std::set<size_t> idset_;
+    };
+    Collector collector;
+    ApplyAlgorithm(id_string.cbegin(),
+		   id_string.cend(),
+		   collector);
+    if (collector.idset_.size() > 0)
+      std::cout << "succeeded to collect: "
+		<< *collector.idset_.cbegin() << std::endl;
+  }
   return 0;
 }
