@@ -30,9 +30,17 @@ void RepeatFunc(FunctionType func,
 
 //-- act on iterators and predicate like algorithm library
 template<typename Iter, typename Pred>
+void ApplyAlgorithmByRef(Iter iter_begin,
+			 Iter iter_end,
+			 Pred& pred) {
+  for (auto iter = iter_begin;
+       iter     != iter_end; iter++)
+    pred(*iter);
+}
+template<typename Iter, typename Pred>
 void ApplyAlgorithm(Iter iter_begin,
 		    Iter iter_end,
-		    Pred& pred) {
+		    Pred pred) {
   for (auto iter = iter_begin;
        iter     != iter_end; iter++)
     pred(*iter);
@@ -70,9 +78,9 @@ int main(int argc, char const* argv[])
       }
     };
     Printer printer;
-    ApplyAlgorithm(id_string.cbegin(),
-		   id_string.cend(),
-		   printer
+    ApplyAlgorithmByRef(id_string.cbegin(),
+			id_string.cend(),
+			printer
 		   // [](const std::pair<size_t, std::string>& pair) {
 		   //   std::cout << pair.first << ", " << pair.second << "\n";
 		   // }
@@ -84,12 +92,21 @@ int main(int argc, char const* argv[])
       std::set<size_t> idset_;
     };
     Collector collector;
-    ApplyAlgorithm(id_string.cbegin(),
-		   id_string.cend(),
-		   collector);
+    ApplyAlgorithmByRef(id_string.cbegin(),
+			id_string.cend(),
+			collector);
     if (collector.idset_.size() > 0)
       std::cout << "succeeded to collect: "
 		<< *collector.idset_.cbegin() << std::endl;
+    //-- explicit instantiation by reference type
+    Collector collector2;
+    ApplyAlgorithm<decltype(id_string)::const_iterator, Collector&>(
+	      id_string.cbegin(),
+	      id_string.cend(),
+	      collector2);
+    if (collector2.idset_.size() > 0)
+      std::cout << "succeeded to collect: "
+		<< *collector2.idset_.cbegin() << std::endl;
   }
   return 0;
 }
