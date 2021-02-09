@@ -45,6 +45,15 @@ void ApplyAlgorithm(Iter iter_begin,
        iter     != iter_end; iter++)
     pred(*iter);
 }
+template<typename ReturnT=void, typename Iter, typename Pred>
+ReturnT ApplyAlgorithmToSecond(Iter iter_begin,
+			       Iter iter_end,
+			       Pred& pred) {
+  for (auto iter = iter_begin;
+       iter     != iter_end; iter++)
+    pred(iter->second);
+  return pred.GetValue();
+}
 int main(int argc, char const* argv[])
 {
   Foo     f;
@@ -85,6 +94,16 @@ int main(int argc, char const* argv[])
 		   //   std::cout << pair.first << ", " << pair.second << "\n";
 		   // }
 		   );
+    struct Print2nd {
+      void operator()(const std::string& str) {
+	std::cout << "Only 2nd: " << str << "\n";
+      }
+      bool GetValue() const {return true;}
+    };
+    Print2nd print2nd;
+    ApplyAlgorithmToSecond<bool>(id_string.cbegin(),
+				 id_string.cend(),
+			   print2nd);
     struct Collector {
       void operator()(const std::pair<size_t, std::string>& pair) {
 	idset_.emplace(pair.first);
