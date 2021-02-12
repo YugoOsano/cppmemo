@@ -227,5 +227,22 @@ int main(int argc, char *argv[])
     }
     std::cout << std::endl;
   }
+  //-- move in copy_if (filter overlapping ids)
+  {
+    std::vector<int> list_with_overlap{1,2,3,3,4,4,4,5,6,7,7};
+    std::vector<int> newlist;
+    std::set<int> elem_ids;
+    std::copy_if(std::make_move_iterator(list_with_overlap.begin()),
+		 std::make_move_iterator(list_with_overlap.end()),
+		 std::back_inserter(newlist),
+		 [&elem_ids](const int x){
+		   const bool is_first = (elem_ids.find(x) == elem_ids.cend());
+		   elem_ids.emplace(x);
+		   return is_first;});
+    std::cout << "size of original: " << list_with_overlap.size() << std::endl;
+    std::cout << "newlist:";
+    for (const int x : newlist) std::cout << x << ",";
+    std::cout << std::endl;
+  }
   return 0;
 }

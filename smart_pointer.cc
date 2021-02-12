@@ -13,6 +13,8 @@
 class Base{
 public:
   Base() : value_(123.456){}
+  Base(const Base&)=default;
+  Base& operator=(const Base&)=default;
   Base(Base&& b) : Base() {
     std::cout << "move constructor of Base." << std::endl;
   }
@@ -96,6 +98,16 @@ int main()
     map_to_recieve.insert(std::make_move_iterator(to_merge.begin()),
 			  std::make_move_iterator(to_merge.end()));
     std::cout << "size of map_to_recieve: " << map_to_recieve.size() << "\n";
+  }
+  {
+    // make_unique with copy
+    // the definition Base(const Base&)=default; is needed to compile
+    Base base;
+    std::unique_ptr<Base> ptr_from_copy
+      (std::make_unique<Base>(base));
+    Base to_swap;
+    // Base& operator=(const Base&)=default; is needed to compile
+    *ptr_from_copy = std::move(to_swap);
   }
   return 0;
 }
