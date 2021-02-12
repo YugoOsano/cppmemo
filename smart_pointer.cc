@@ -42,6 +42,15 @@ public:
 protected:
   const std::unique_ptr<const Base> ptr_base_;
 };
+class AssignLater {
+public:
+  AssignLater() : ptr_base_(nullptr) {}
+  void Assign(std::unique_ptr<Base>&& ptr) {
+    ptr_base_ = std::move(ptr);
+  }
+private:
+  std::unique_ptr<Base> ptr_base_;
+};
 
 int main()
 {
@@ -108,6 +117,13 @@ int main()
     Base to_swap;
     // Base& operator=(const Base&)=default; is needed to compile
     *ptr_from_copy = std::move(to_swap);
+  }
+  {
+    auto ptr(std::make_unique<Base>());
+    AssignLater al;
+    al.Assign(std::move(ptr));
+    // std::cout << "ptr->GetValue(): "
+    // 	      << ptr->GetValue() << std::endl <- Seg fault;
   }
   return 0;
 }
