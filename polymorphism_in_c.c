@@ -12,10 +12,9 @@ void Bye(){
 }
 
 int main () {
-  Classlike obj;
-  obj.ptr_func_ = Hello;
+  Classlike obj={Hello};
   (*obj.ptr_func_)();
-  obj.ptr_func_ = Bye;
-  (*obj.ptr_func_)();
+  Classlike bye={Bye};
+  (*bye.ptr_func_)();
   return 0;
 }
