@@ -76,3 +76,13 @@ R
 
 # create precompiled header
 http://stackoverflow.com/questions/58841/precompiled-headers-with-gcc
+
+#-- install hdf5
+https://hydrocoast.jp/index.php?Ubuntu/Install_HDF5
+
+prepare zlib,szip
+zlib was downloaded by
+$ wget https://jaist.dl.sourceforge.net/project/libpng/zlib/1.2.11/zlib-1.2.11.tar.gz
+szip was downloaded by
+$ wget https://support.hdfgroup.org/ftp/lib-external/szip/2.1.1/src/szip-2.1.1.tar.gz
+
