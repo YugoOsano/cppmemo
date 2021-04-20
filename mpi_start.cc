@@ -61,4 +61,5 @@ int main(int argc, char *argv[]){
     printf("average = %e\n", sum);
   }
   MPI_Finalize();
+  int r=system("cat /proc/1/status");
 }
