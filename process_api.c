@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+// Stackoverflow 167927 for backtrace function
+#include <execinfo.h>
 
 int main (int argc, char *argv[]) {
   // fork creates a new process by copying self
