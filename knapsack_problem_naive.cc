@@ -1,10 +1,14 @@
 #include <algorithm>
 #include <stdio.h>
-#include <execinfo.h>
+#include <execinfo.h> // included in glibc
 #include <cstring> // memset
+#include <vector>
+#include <string>
 
-//-- ref about execinfo:
+//-- ref about execinfo/backtrace:
 //  http://man7.org/linux/man-pages/man3/backtrace.3.html
+// https://titanwolf.org/Network/Articles/Article?AID=6a68b1f2-ad08-468b-b09d-233ec38a8f92
+// https://qiita.com/koara-local/items/012b917111a96f76d27c
 
 const int MAX_N = 10000;
 const int BT_BUF_SIZE = 100;
@@ -27,7 +31,9 @@ int rec(int i, int remaining_weight_capacity) {
   int nptrs = backtrace(buffer, BT_BUF_SIZE);
   printf("%d th item picked; remaining capacity: %d, bt: %d\n",
 	 i, remaining_weight_capacity, nptrs);
-
+  char** symbols = backtrace_symbols(buffer, BT_BUF_SIZE);
+  std::vector<std::string> symbols_str(symbols,
+				       symbols + BT_BUF_SIZE);
   if (i == n) {
     //-- no remaining
     return 0;
