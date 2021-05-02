@@ -10,6 +10,10 @@
 // 3) PIC stands for Position Independent Code (recommended)
 //    which means it runs regardless of its absolute address.
 
+// to see search path for libxxx.so or libxxx.a
+// http://techtipshoge.blogspot.com/2014/03/lm.html
+// $ gcc --print-search-dirs
+
 int add (int a, int b) {
   return a+b;
 }
