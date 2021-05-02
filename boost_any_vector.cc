@@ -4,6 +4,7 @@
 #include <vector>
 //#include <any>
 #include <boost/any.hpp>
+#include <stdio.h>
 
 struct A
 {
@@ -37,4 +38,15 @@ int main()
       if (e.type() == typeid(B))
 	std::cout << (double)boost::any_cast<B>(e) << std::endl;
     }
+  {
+    double x = 234.567;
+    void* ptr = &x;
+    printf("%p\n", ptr);
+    unsigned long i = *static_cast<unsigned long*>(ptr);
+    printf("%ld\n", i);
+    void* ptr_i = &i;
+    printf("%p\n", ptr_i);
+    double x_back = *static_cast<double*>(ptr_i);
+    printf("%f\n", x_back);
+  }
 }
