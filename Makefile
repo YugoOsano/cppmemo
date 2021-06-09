@@ -4,6 +4,13 @@
 all:
 	@echo Hello, World!
 
+# make METHOD=1
+ifeq ($(METHOD),1)
+	@echo METHOD is $(METHOD)
+else
+	@echo METHOD is not 1, but $(METHOD)
+endif
+
 # assignment to values is done with := or =.
 
 # := is close to regular script languages' counterpart;
@@ -24,3 +31,6 @@ LIST := huge.c hoge hige.c hoge.c hoga.c hogehogeeee.c
 $(warning $(filter hoge, $(LIST)))
 $(warning $(filter hoge%, $(LIST)))
 
+# make runinpart
+runinpart:
+	@echo Hello, part of the world!
