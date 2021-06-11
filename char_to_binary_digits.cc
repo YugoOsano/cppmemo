@@ -33,7 +33,18 @@ std::string GetBinaryDigitsFromChar(const char x) {
   return to_return;
 }
 
+// https://stackoverflow.com/questions/44609743/obtaining-bit-representation-of-a-float-in-c
+union DoubleIntUnion {
+  double       f_;
+  std::int64_t i_;
+};
+
+#include <cmath>
+#include <stdio.h>
 int main () {
   std::cout << GetBinaryDigitsFromChar('a') << std::endl;
+
+  DoubleIntUnion u{.f_ = M_PI};
+  printf("%f, %ld\n", u.f_, u.i_);
   return 0;
 }
