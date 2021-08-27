@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <cctype>
 
 int main()
 {
@@ -36,6 +37,16 @@ int main()
     std::stringstream ss;
     ss << std::regex_replace(coloring, pattern_color, "");
     std::cout << ss.str() << std::endl;
+  }
+  {//-- simple parse by istringstream
+    std::cout << "--------(isdigit)--" << std::endl;
+    const std::string text("1 b 2 c 3 hello 23");
+    std::istringstream iss(text);
+    std::string tmp;
+    while (iss >> tmp) {
+      const char* ptr = tmp.c_str();
+      std::cout << tmp << "\t(" << std::isdigit(*ptr) << ")" << std::endl;
+    }
   }
   return 0;
 }
