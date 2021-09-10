@@ -1,9 +1,13 @@
 // practice of flat_map
 // compiler with -std=c++11
 
+// bimap added
+
 #include <boost/container/flat_map.hpp>
-#include <utility>
+#include <boost/bimap/bimap.hpp>
 #include <iostream>
+#include <map>
+#include <string>
 
 int main () {
 
@@ -18,7 +22,17 @@ int main () {
 	      << pair.second << std::endl;
 
   std::cout << map_sample.at(20) << std::endl;
-  
+
+  {//-- copy from std::map (stackoverflow 12178067)
+    const std::map<std::string, int> name_to_id {
+	 {"Hello", 10},
+	 {"World", 23}
+    };
+    boost::bimaps::bimap<std::string, int> bm;
+    bm.left.insert(name_to_id.cbegin(),
+		   name_to_id.cend());
+    std::cout << bm.left.at("World") << ","
+	      << bm.right.at(10)     << std::endl;
+  }
   return 0;
 }
-
