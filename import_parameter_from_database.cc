@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <boost/variant.hpp>
+#include <vector>
 
 std::map <std::string, std::string> Database{
   {"integer", "1000"},
@@ -16,6 +17,16 @@ struct ParameterStorage {
   double x;
   std::string str;
 };
+
+// practice of variant
+using DVecD = boost::variant<double,std::vector<double>>;
+
+DVecD ReturnVariant(const bool is_vec) {
+  //-- double or vector<double>
+  if (!is_vec)
+    return 11.11;
+  return std::vector<double>{1.1,2.2};
+}
 
 int main () {
 
@@ -52,18 +63,20 @@ int main () {
       std::string* ptr = 
 	boost::get<std::string*>(param_to_string.first);
       std::cout << ptr << std::endl;
-      
+
       *ptr = Database.at(param_to_string.second);
-    } 
+    }
   }
-  
   std::cout << "param int: "
 	    << param_storage.i << std::endl;
   std::cout << "param double: "
 	    << param_storage.x << std::endl;
   std::cout << "param string: "
 	    << param_storage.str << std::endl;
-
-  
+  {
+    DVecD maybe_d = ReturnVariant(true);
+    std::cout << "maybe_d.which(): " << maybe_d.which() << std::endl;
+    //    std::cout << "maybe_vec.which(): " << maybe_vec.which() << std::endl;
+  }
   return 0;
 }
