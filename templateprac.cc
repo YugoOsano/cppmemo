@@ -101,11 +101,29 @@ size_t CountOf(const T(&)[N]){
   return N;
 }
 
+//--- iterate over different types
+// https://stackoverflow.com/questions/34314193/iterating-over-different-types
+struct Window{
+  void show() {std::cout << "Window\n";}
+}w1, w2, w3;
+struct Widget{
+  void show() {std::cout << "Widget\n";}
+}w4, w5, w6;
+struct Toolbar{
+  void show() {std::cout << "Toolbar\n";}
+}t1, t2, t3;
+template<class...Objects>
+void call_show(Objects&&...objects)
+{
+  using expand = int[];
+  (void) expand { 0, ((void)objects.show(), 0)... };
+}
+
 int main(int argc, char *argv[])
 {
   std::cout << "Hello, World!" << std::endl;
   std::cout << boost::format("%s\n") % "Hello, Boost!";
-  
+
   int x = Factorial<4>::value;
   int y = Factorial<0>::value;
 
@@ -135,7 +153,7 @@ int main(int argc, char *argv[])
   //-------------------
   boost::numeric::ublas::matrix<double> matd(3,4), mat2(3,4); //lines, rows
   boost::numeric::ublas::matrix<std::complex<double> > matc(2,2);
-  
+
   for(int i=0; i<3; i++)
     {
       for(int j=0; j<4; j++)
@@ -158,7 +176,7 @@ int main(int argc, char *argv[])
   std::cout << "matd + mat2 = " << matd + mat2 << std::endl;
 
   std::cout << "matc = " << matc << std::endl;
-  
+
   //--- variadic template ---
   StructA instanceA;
 
@@ -169,6 +187,10 @@ int main(int argc, char *argv[])
   std::cout << "Variadic func in class: " 
 	    << instance_outer.VariadicArgFunc(3, 5, instanceA)
 	    << std::endl;
-
+  //-- iterate over different types
+  {
+    std::cout << "---------------\n";
+    call_show(w3, w4, w5, t1);
+  }
   return 0;
 }
