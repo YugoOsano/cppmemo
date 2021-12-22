@@ -127,5 +127,21 @@ int main(int argc, char const* argv[])
       std::cout << "succeeded to collect: "
 		<< *collector2.idset_.cbegin() << std::endl;
   }
+  {// function pointer to accept a lambda
+    // see StackOverflow 28746744; do not use capture
+    bool(*ptr_func)();
+    class ClassToAccept{
+    public:
+      bool(*ptr_func_)();
+    };
+    auto lambda_func
+      = [](){
+	  std::cout << "Hello func pointer" << std::endl;
+	  return true;};
+    ptr_func = lambda_func;
+    (*ptr_func)();
+    ClassToAccept a{lambda_func};
+    (*a.ptr_func_)();
+  }
   return 0;
 }
