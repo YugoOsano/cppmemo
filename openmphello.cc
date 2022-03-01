@@ -60,19 +60,18 @@ int main()
     printf("value: %d, thread: %d\n", elem, omp_get_thread_num());
 
 
-  #pragma omp parallel
+  //#pragma omp parallel num_threads(8)
   {
     int num_threads =  omp_get_num_threads();
     printf("num_threads: %d\n", num_threads);
 
-    for (int i_all = 0; i_all < 8; i_all) {
-      #pragma omp parallel for
-      for (int i = 0; i < num_threads; i++) {
-	i_all++;
-	printf("barrier test: thread: %d\n", omp_get_thread_num());
+#pragma omp parallel for
+    for (int i_all = 0; i_all < 8; i_all++) {
+      printf("barrier test: thread: %d\n", omp_get_thread_num());
+      if (omp_get_thread_num() == 0) {
+	#pragma omp critical
+	printf("critical section entered\n");
       }
-      #pragma omp barrier
-      printf("after barrier: thread: %d\n", omp_get_thread_num());
     }
   }
   //--- parallelize loop over iterator ---
