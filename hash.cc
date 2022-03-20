@@ -24,10 +24,12 @@ int main() {
     std::vector<int> intv(10000);
     std::iota(intv.begin(),
 	      intv.end(), 1);
+    //intv[10000] = 10;// to see sum change with the range on process_bytes
     boost::crc_32_type crc32;
-    crc32.process_bytes(intv.data(), intv.size());
+    crc32.process_bytes(intv.data(),
+			sizeof(int) * (intv.size() /*+1*/));
     const size_t sum = crc32.checksum();
-    std::cout << sum << std::endl;
+    std::cout << "crc32.checksum: " << sum << std::endl;//1886789874
   }
   return 0;
 }
