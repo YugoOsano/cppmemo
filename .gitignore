@@ -10,6 +10,7 @@ a.out
 *.ali
 *.so
 *.zip
+*.h5
 bitmap/*
 cmake_example/build/*
 
