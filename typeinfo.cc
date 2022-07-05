@@ -1,12 +1,15 @@
 #include <iostream>
 #include <typeinfo>
+#include <typeindex>
 #include <type_traits>
 #include <tuple>
 #include <vector>
 #include <map>
+#include <memory>
 
-class Aclass{
-};
+class Aclass{};
+class Bclass : public Aclass {};
+class Cclass : public Aclass {};
 
 // Reference; C++ template technique p-93
 template <class T>
@@ -63,6 +66,13 @@ int main(){
 		  "map_value is std::pair<int, Aclass>");
     std::cout << "map_value type: " << typeid(map_value).name()
 	    << std::endl;
+  }
+  { // recognize switch of type
+    // https://stackoverflow.com/questions/53467813/comparing-two-type-info-from-typeid-operator
+    std::unique_ptr<Aclass> ptr_A(std::make_unique<Bclass>());
+    const auto& ref_before_switch   = typeid(*ptr_A);
+    const auto  index_before_switch = std::type_index(ref_before_switch);
+    [&index_before_switch](){}();// p in gdb results: {_M_target = 0x555555558c48 <typeinfo for Aclass>}
   }
   return 0;
 }
