@@ -1,5 +1,6 @@
 # transcribed from 
 # https://kamino.hatenablog.com/entry/cmake_tutorial1
+
 cmake_minimum_required(VERSION 3.1)
 
 # project name and programming language
@@ -33,3 +34,12 @@ add_executable(main_app main.cpp func.hpp func.cpp)
 
 # blog about cmake tutorial
 # https://yuyubu-sub.hateblo.jp/entry/2019/11/25/cmake
+# ctest for Fortran
+# https://qiita.com/implicit_none/items/e4e0f627b15ca40165c8
+
+# using ctest
+# https://mickey-happygolucky.hatenablog.com/entry/2021/02/02/231851
+# Enable test
+enable_testing()
+
+add_test(NAME run_test COMMAND main_app)
