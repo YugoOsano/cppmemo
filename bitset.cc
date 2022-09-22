@@ -3,6 +3,7 @@
 // g++ bitset.cc -std=c++11
 
 #include <iostream>
+#include <boost/dynamic_bitset.hpp>
 #include <bitset>
 #include <limits>
 
@@ -82,7 +83,14 @@ int main()
   long long result = bit_operation >> 2;
   std::cout << "bit operation's result: " << result 
 	    << std::endl;
-
+  {// dynamic_bitset
+    boost::dynamic_bitset<uint8_t> dbs(16);
+    dbs.set(); // set true at every bit by set()
+    std::cout << "--dynamic_bitset--" << std::endl;
+    for (size_t i=0; i<16; i++)
+      std::cout << static_cast<size_t>(dbs[i]) << " ";
+    std::cout << std::endl;
+  }
   //-- time ---
   const long long Nrepeat = 1000000000;
   DoubleLongLong result_instance;
