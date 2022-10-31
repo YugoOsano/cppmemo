@@ -86,6 +86,7 @@ int main()
 
     //-- take reference in a range-based for
     for(const std::unique_ptr<const Base>& ptr : vec) {
+      ptr->GetValue();
     }
   }
   {
