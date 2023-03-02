@@ -14,6 +14,13 @@
 // compiled by: mpic++ mpi_start.cc
 // run by:      mpirun -np 4 ./a.out
 
+// to see what mpicc/mpic++ wrap:
+// https://stackoverflow.com/questions/11312719/how-to-compile-mpi-with-gcc
+// $ mpicc -showme
+// gcc -I/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -I/usr/lib/x86_64-linux-gnu/openmpi/include -pthread -L/usr/lib/x86_64-linux-gnu/openmpi/lib -lmpi
+// $ mpic++ -showme
+// g++ -I/usr/lib/x86_64-linux-gnu/openmpi/include/openmpi -I/usr/lib/x86_64-linux-gnu/openmpi/include -pthread -L/usr/lib/x86_64-linux-gnu/openmpi/lib -lmpi_cxx -lmpi
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
